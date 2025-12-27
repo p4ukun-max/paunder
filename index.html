@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-<title>HeartChat — Tinder Style</title>
+<title>HeartChat RPG — Tinder Style</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,6 +24,7 @@ body{
   display:flex;
   flex-direction:column;
   overflow:hidden;
+  color:white;
 }
 
 /* HEADER */
@@ -131,13 +132,95 @@ header{
 /* STACK */
 .card[data-i="1"]{transform:scale(.97) translateY(8px);opacity:.9}
 .card[data-i="2"]{transform:scale(.94) translateY(16px);opacity:.8}
+
+/* CHAT */
+#chatList{
+  display:none;
+  flex-direction:column;
+  flex:1;
+  overflow-y:auto;
+  background:#111;
+}
+.chatItem{
+  display:flex;
+  padding:10px;
+  border-bottom:1px solid #222;
+  cursor:pointer;
+}
+.chatItem img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  margin-right:10px;
+}
+.chatItem .info{
+  flex:1;
+}
+.chatItem .name{
+  font-weight:bold;
+}
+.chatItem .lastMsg{
+  font-size:0.85rem;
+  opacity:0.7;
+}
+
+#chatWindow{
+  display:none;
+  flex-direction:column;
+  flex:1;
+  background:#111;
+}
+#chatMsgs{
+  flex:1;
+  overflow-y:auto;
+  padding:10px;
+}
+.msg{
+  margin:6px 0;
+  padding:6px 10px;
+  border-radius:12px;
+  max-width:70%;
+}
+.msg.yo{
+  background:#22c55e;
+  align-self:flex-end;
+}
+.msg.ella{
+  background:#333;
+  align-self:flex-start;
+}
+#chatOpciones{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  padding:10px;
+}
+#chatInputWrapper{
+  display:flex;
+  padding:10px;
+}
+#chatInput{
+  flex:1;
+  padding:6px 10px;
+  border-radius:12px;
+  border:none;
+}
+#sendBtn{
+  padding:6px 12px;
+  margin-left:6px;
+  border:none;
+  border-radius:12px;
+  background:#22c55e;
+  color:white;
+  cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 <div class="app">
 
-<header>HeartChat</header>
+<header>HeartChat RPG</header>
 
 <div class="deck" id="deck">
   <div class="badge like-badge" id="likeBadge">LIKE</div>
@@ -149,24 +232,68 @@ header{
   <button class="circle-btn star">★</button>
   <button class="circle-btn like" id="btnLike">♥</button>
 </div>
-<p id="respuesta"></p>
+
+<!-- Lista de chats estilo WhatsApp -->
+<div id="chatList"></div>
+
+<!-- Ventana de chat -->
+<div id="chatWindow">
+  <div id="chatHeader" style="padding:10px;font-weight:bold;"></div>
+  <div id="chatMsgs"></div>
+  <div id="chatOpciones"></div>
+  <div id="chatInputWrapper">
+    <input id="chatInput" placeholder="Escribe...">
+    <button id="sendBtn">Enviar</button>
+  </div>
+</div>
+
 </div>
 
 <script>
+/* ===================== DATOS ===================== */
 const PERSONAJES=[
-{
-  name:"Leonardo",
-  age:27,
-  distance:"4 km",
-  bio:"Me gusta prácticar deporte y voy a menudo al gimnasio, soy un atleta fornido y guapo mami",
-  img:"gympau.png"
-}
+  {name:"Leonardo", age:27, distance:"4 km", bio:"Me gusta practicar deporte y voy a menudo al gimnasio", img:"gympau.png"},
+  {name:"Camila", age:25, distance:"2 km", bio:"Amo el arte y viajar por el mundo", img:"camila.png"},
+  {name:"Sofia", age:22, distance:"3 km", bio:"Fan de Netflix y los gatos 🐱", img:"sofia.png"}
 ];
 
+/* Elecciones RPG */
+const eleccionesRPG = [
+  {
+    pregunta: "¿Qué te gusta hacer el fin de semana?",
+    opciones: [
+      { texto: "Ir al gimnasio 💪", efecto: 10 },
+      { texto: "Quedarme en casa 🛋️", efecto: -5 },
+      { texto: "Salir con amigos 🍻", efecto: 5 },
+    ]
+  },
+  {
+    pregunta: "¿Cuál es tu comida favorita?",
+    opciones: [
+      { texto: "Pizza 🍕", efecto: 5 },
+      { texto: "Ensalada 🥗", efecto: 2 },
+      { texto: "Carne asada 🥩", efecto: 8 },
+    ]
+  }
+];
+
+/* ===================== VARIABLES ===================== */
 const deck=document.getElementById("deck");
 const likeBadge=document.getElementById("likeBadge");
 const skipBadge=document.getElementById("skipBadge");
 
+const chatList = document.getElementById("chatList");
+const chatWindow = document.getElementById("chatWindow");
+const chatHeader = document.getElementById("chatHeader");
+const chatMsgs = document.getElementById("chatMsgs");
+const chatOpciones = document.getElementById("chatOpciones");
+const chatInput = document.getElementById("chatInput");
+const sendBtn = document.getElementById("sendBtn");
+
+let matches = [];
+let chatActual = null;
+
+/* ===================== FUNCIONES ===================== */
 function createCard(p){
   const c=document.createElement("div");
   c.className="card";
@@ -211,6 +338,12 @@ function drag(card){
 function swipe(card,dir){
   card.style.transform=`translateX(${dir*800}px) rotate(${dir*25}deg)`;
   card.style.opacity=0;
+
+  if(dir===1){
+    const nombre = card.querySelector(".name").innerText;
+    crearMatch(nombre);
+  }
+
   setTimeout(()=>card.remove(),300);
 }
 
@@ -223,30 +356,138 @@ document.getElementById("btnSkip").onclick=()=>{
   if(c) swipe(c,-1);
 };
 
-PERSONAJES.forEach(createCard);
-</script>
-  <html>
-<body>
-    <script src="https://js.puter.com/v2/"></script>
-    <script>
-	const respuestaP = document.getElementById("respuesta");
+/* ===================== MATCHES ===================== */
+function crearMatch(nombre){
+  const perfil = PERSONAJES.find(p=>`${p.name}, ${p.age}`===nombre);
+  if(!perfil) return;
 
-  puter.ai.chat([
-    { role: "system", content: "Responde siempre en un tono oscuro, melancólico y gótico, como si fueras un personaje de novela gótica." },
-    { role: "user", content: "Buenos días, ¿qué tal estás?" }
-  ], { model: "gpt-4.1-nano" })
-  .then(response => {
-      // Mostramos el texto de la IA en el <p>
-      respuestaP.innerText = response.choices?.[0]?.message?.content || "No hubo respuesta";
-  })
-  .catch(err => {
-      respuestaP.innerText = "Error al contactar la IA: " + err.message;
+  const chat = {
+    nombre: perfil.name,
+    img: perfil.img,
+    interes: 50,
+    mensajes: [],
+    estado: "activo"
+  };
+  matches.push(chat);
+  guardarProgreso();
+  renderChatList();
+  abrirChat(chat);
+}
+
+/* ===================== CHAT LIST ===================== */
+function renderChatList(){
+  chatList.style.display="flex";
+  chatList.innerHTML="";
+  matches.forEach(c=>{
+    const div = document.createElement("div");
+    div.className="chatItem";
+    div.innerHTML=`<img src="${c.img}"><div class="info"><div class="name">${c.nombre}</div><div class="lastMsg">${c.mensajes.slice(-1)[0]?.texto || ""}</div></div>`;
+    div.onclick=()=>abrirChat(c);
+    chatList.appendChild(div);
   });
-    </script>
+}
+
+/* ===================== ABRIR CHAT ===================== */
+function abrirChat(chat){
+  chatActual = chat;
+  deck.style.display="none";
+  chatList.style.display="none";
+  chatWindow.style.display="flex";
+  chatHeader.innerText = chat.nombre;
+  renderMensajes();
+}
+
+/* ===================== RENDER MENSAJES ===================== */
+function renderMensajes(){
+  chatMsgs.innerHTML="";
+  chatActual.mensajes.forEach(m=>{
+    const div=document.createElement("div");
+    div.className="msg "+m.autor;
+    div.innerText=m.texto;
+    chatMsgs.appendChild(div);
+  });
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+}
+
+/* ===================== ELECCIONES RPG ===================== */
+let eleccionesPendientes = [...eleccionesRPG];
+function mostrarEleccion(e){
+  chatOpciones.innerHTML = "";
+  e.opciones.forEach(o=>{
+    const btn = document.createElement("button");
+    btn.innerText = o.texto;
+    btn.onclick = ()=>{
+      chatActual.interes += o.efecto;
+      chatActual.mensajes.push({autor:"yo", texto:o.texto});
+      renderMensajes();
+      chatOpciones.innerHTML="";
+      setTimeout(respuestaAuto, Math.random()*2000+1000);
+      guardarProgreso();
+    };
+    chatOpciones.appendChild(btn);
+  });
+}
+
+/* ===================== RESPUESTA AUTOMATICA ===================== */
+function respuestaAuto(){
+  if(chatActual.estado!=="activo") return;
+
+  // ghosting
+  if(chatActual.interes<=0){ chatActual.estado="ghost"; chatActual.mensajes.push({autor:"ella", texto:"..."}); renderMensajes(); return; }
+
+  let texto;
+  if(chatActual.interes>70) texto="Me caes muy bien 😏";
+  else if(chatActual.interes<30) texto="ok";
+  else texto="Jajaja 😄";
+
+  chatActual.mensajes.push({autor:"ella", texto});
+  renderMensajes();
+
+  // elecciones RPG
+  const next = eleccionesPendientes.shift();
+  if(next) mostrarEleccion(next);
+  guardarProgreso();
+}
+
+/* ===================== INPUT MENSAJE ===================== */
+sendBtn.onclick=()=>{
+  const txt = chatInput.value.trim();
+  if(!txt) return;
+  chatActual.mensajes.push({autor:"yo", texto:txt});
+  evaluarMensaje(txt);
+  chatInput.value="";
+  renderMensajes();
+  setTimeout(respuestaAuto, Math.random()*1000+1000);
+  guardarProgreso();
+};
+
+function evaluarMensaje(txt){
+  if(txt.toLowerCase().includes("hola")) chatActual.interes+=5;
+  else if(txt.toLowerCase().includes("gym")) chatActual.interes+=8;
+  else if(txt.length<3) chatActual.interes-=5;
+  else chatActual.interes+=2;
+}
+
+/* ===================== LOCALSTORAGE ===================== */
+function guardarProgreso(){
+  localStorage.setItem("heartChat", JSON.stringify({matches, eleccionesPendientes}));
+}
+
+function cargarProgreso(){
+  const data = localStorage.getItem("heartChat");
+  if(!data) return;
+  const saved = JSON.parse(data);
+  matches = saved.matches || [];
+  eleccionesPendientes = saved.eleccionesPendientes || [...eleccionesRPG];
+  if(matches.length>0){
+    renderChatList();
+  }
+}
+
+/* ===================== INICIO ===================== */
+PERSONAJES.forEach(createCard);
+cargarProgreso();
+</script>
+
 </body>
 </html>
-</body>
-</html>
-
-
-
