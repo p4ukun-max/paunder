@@ -149,7 +149,7 @@ header{
   <button class="circle-btn star">★</button>
   <button class="circle-btn like" id="btnLike">♥</button>
 </div>
-
+<p id="respuesta"></p>
 </div>
 
 <script>
@@ -229,14 +229,24 @@ PERSONAJES.forEach(createCard);
 <body>
     <script src="https://js.puter.com/v2/"></script>
     <script>
-        puter.ai.chat("buenos dias que tal estas?", { model: "gpt-4.1-nano" })
-            .then(response => {
-                puter.print(response);
-            });
+	const respuestaP = document.getElementById("respuesta");
+
+  puter.ai.chat([
+    { role: "system", content: "Responde siempre en un tono oscuro, melancólico y gótico, como si fueras un personaje de novela gótica." },
+    { role: "user", content: "Buenos días, ¿qué tal estás?" }
+  ], { model: "gpt-4.1-nano" })
+  .then(response => {
+      // Mostramos el texto de la IA en el <p>
+      respuestaP.innerText = response.choices?.[0]?.message?.content || "No hubo respuesta";
+  })
+  .catch(err => {
+      respuestaP.innerText = "Error al contactar la IA: " + err.message;
+  });
     </script>
 </body>
 </html>
 </body>
 </html>
+
 
 
