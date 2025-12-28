@@ -7,224 +7,53 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{
-  font-family:Inter,system-ui,Arial;
-  background:#000;
-  display:flex;
-  justify-content:center;
-}
-
-/* APP */
-.app{
-  width:100%;
-  max-width:420px;
-  height:100vh;
-  background:#000;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  color:white;
-}
+html,body{height:100%;background:#000;color:white;font-family:Inter,system-ui,Arial;display:flex;justify-content:center;}
+.app{width:100%;max-width:420px;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 
 /* HEADER */
-header{
-  padding:14px;
-  color:#fff;
-  font-weight:700;
-  text-align:center;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-/* Flecha atrás */
-#backBtn{
-  font-size:1.5rem;
-  cursor:pointer;
-  display:none;
-}
+header{padding:14px;display:flex;align-items:center;justify-content:space-between;font-weight:700;}
+#backBtn{font-size:1.5rem;cursor:pointer;display:none;}
 
 /* DECK */
-.deck{
-  flex:1;
-  position:relative;
-  overflow:hidden;
-}
-
-/* CARD */
-.card{
-  position:absolute;
-  inset:10px;
-  border-radius:18px;
-  overflow:hidden;
-  background:#111;
-  box-shadow:0 20px 40px rgba(0,0,0,.4);
-  touch-action:none;
-  transition:transform .3s ease, opacity .3s ease;
-}
-
-/* IMAGE */
-.card img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-/* OVERLAY */
-.overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,.85) 20%,
-    rgba(0,0,0,.2) 55%,
-    rgba(0,0,0,0) 75%
-  );
-  color:#fff;
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-}
-
-.name{
-  font-size:1.4rem;
-  font-weight:800;
-}
-
-.distance{
-  font-size:.85rem;
-  opacity:.8;
-  margin:4px 0;
-}
-
-.bio{
-  font-size:.95rem;
-  opacity:.9;
-}
+.deck{flex:1;position:relative;overflow:hidden;}
+.card{position:absolute;inset:10px;border-radius:18px;overflow:hidden;background:#111;box-shadow:0 20px 40px rgba(0,0,0,.4);touch-action:none;transition:transform .3s ease, opacity .3s ease;}
+.card img{width:100%;height:100%;object-fit:cover;display:block;}
+.overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.85) 20%, rgba(0,0,0,.2) 55%, rgba(0,0,0,0) 75%);color:#fff;padding:16px;display:flex;flex-direction:column;justify-content:flex-end;}
+.name{font-size:1.4rem;font-weight:800;}
+.distance{font-size:.85rem;opacity:.8;margin:4px 0;}
+.bio{font-size:.95rem;opacity:.9;}
 
 /* CONTROLS */
-.controls{
-  padding:18px 0 26px;
-  display:flex;
-  justify-content:center;
-  gap:26px;
-}
-
-.circle-btn{
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  border:none;
-  font-size:1.6rem;
-  cursor:pointer;
-}
-
+.controls{padding:18px 0 26px;display:flex;justify-content:center;gap:26px;}
+.circle-btn{width:64px;height:64px;border-radius:50%;border:none;font-size:1.6rem;cursor:pointer;}
 .skip{background:#222;color:#ff4458}
 .star{background:#222;color:#3b82f6}
 .like{background:#222;color:#ff79c6}
 
 /* BADGES */
-.badge{
-  position:absolute;
-  top:24px;
-  padding:6px 12px;
-  font-weight:800;
-  border-radius:8px;
-  opacity:0;
-}
-
+.badge{position:absolute;top:24px;padding:6px 12px;font-weight:800;border-radius:8px;opacity:0;}
 .like-badge{left:20px;background:#22c55e}
 .skip-badge{right:20px;background:#ff4458}
-
-/* STACK */
 .card[data-i="1"]{transform:scale(.97) translateY(8px);opacity:.9}
 .card[data-i="2"]{transform:scale(.94) translateY(16px);opacity:.8}
 
 /* CHAT LIST */
-#chatList{
-  display:none;
-  flex-direction:column;
-  flex:1;
-  overflow-y:auto;
-  background:#111;
-}
-.chatItem{
-  display:flex;
-  padding:10px;
-  border-bottom:1px solid #222;
-  cursor:pointer;
-}
-.chatItem img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  margin-right:10px;
-}
-.chatItem .info{
-  flex:1;
-}
-.chatItem .name{
-  font-weight:bold;
-}
-.chatItem .lastMsg{
-  font-size:0.85rem;
-  opacity:0.7;
-}
+#chatListScreen,#chatWindow{display:none;flex-direction:column;flex:1;background:#111;overflow-y:auto;}
+.chatItem{display:flex;padding:10px;border-bottom:1px solid #222;cursor:pointer;}
+.chatItem img{width:40px;height:40px;border-radius:50%;margin-right:10px;}
+.chatItem .info{flex:1;}
+.chatItem .name{font-weight:bold;}
+.chatItem .lastMsg{font-size:0.85rem;opacity:0.7;}
 
 /* CHAT WINDOW */
-#chatWindow{
-  display:none;
-  flex-direction:column;
-  flex:1;
-  background:#111;
-}
-#chatMsgs{
-  flex:1;
-  overflow-y:auto;
-  padding:10px;
-}
-.msg{
-  margin:6px 0;
-  padding:6px 10px;
-  border-radius:16px;
-  max-width:70%;
-}
-.msg.yo{
-  background:#ff79c6;
-  align-self:flex-end;
-}
-.msg.ella{
-  background:#333;
-  align-self:flex-start;
-}
-#chatOpciones{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  padding:10px;
-}
-#chatInputWrapper{
-  display:flex;
-  padding:10px;
-}
-#chatInput{
-  flex:1;
-  padding:6px 10px;
-  border-radius:12px;
-  border:none;
-}
-#sendBtn{
-  padding:6px 12px;
-  margin-left:6px;
-  border:none;
-  border-radius:12px;
-  background:#ff79c6;
-  color:white;
-  cursor:pointer;
-}
+#chatMsgs{flex:1;overflow-y:auto;padding:10px;}
+.msg{margin:6px 0;padding:6px 10px;border-radius:16px;max-width:70%;}
+.msg.yo{background:#ff79c6;align-self:flex-end;}
+.msg.ella{background:#333;align-self:flex-start;}
+#chatOpciones{display:flex;flex-direction:column;gap:6px;padding:10px;}
+#chatInputWrapper{display:flex;padding:10px;}
+#chatInput{flex:1;padding:6px 10px;border-radius:12px;border:none;}
+#sendBtn{padding:6px 12px;margin-left:6px;border:none;border-radius:12px;background:#ff79c6;color:white;cursor:pointer;}
 </style>
 </head>
 
@@ -233,10 +62,11 @@ header{
 
 <header>
   <span id="backBtn">←</span>
-  <span>HeartChat RPG</span>
-  <span></span>
+  <span id="headerTitle">HeartChat RPG</span>
+  <span><button id="goChats" style="background:none;border:none;color:white;cursor:pointer;">Chats</button></span>
 </header>
 
+<!-- DECK -->
 <div class="deck" id="deck">
   <div class="badge like-badge" id="likeBadge">LIKE</div>
   <div class="badge skip-badge" id="skipBadge">NOPE</div>
@@ -248,10 +78,10 @@ header{
   <button class="circle-btn like" id="btnLike">♥</button>
 </div>
 
-<!-- Lista de chats estilo WhatsApp -->
-<div id="chatList"></div>
+<!-- LISTA DE CHATS -->
+<div id="chatListScreen"></div>
 
-<!-- Ventana de chat -->
+<!-- VENTANA DE CHAT -->
 <div id="chatWindow">
   <div id="chatHeader" style="padding:10px;font-weight:bold;"></div>
   <div id="chatMsgs"></div>
@@ -268,21 +98,13 @@ header{
 /* ===================== DATOS ===================== */
 const PERSONAJES=[
   {name:"Leonardo", age:34, distance:"4 km", bio:"Me gusta practicar deporte y voy al gimnasio", img:"gympau.png"},
-  {name:"Dylan", age:25, distance:"45 km", bio:"🌊 Socorrista de día, buscador de aventuras de noche. ☀️ Rubio, con amor por el sol, las olas y los atardeceres en la playa.🏄‍♂️ Si sabes surfear, tenemos competencia; si no, te enseño. 🍹 Experto en hacer mojitos y rescatar sonrisas. 💬 Swipe right si quieres un compañero para paseos en la arena y risas garantizadas.", img:"socorrista1.png"},
+  {name:"Dylan", age:25, distance:"45 km", bio:"🌊 Socorrista de día, buscador de aventuras de noche. ☀️ Rubio, con amor por el sol, las olas y los atardeceres en la playa. 🏄‍♂️ Si sabes surfear, tenemos competencia; si no, te enseño. 🍹 Experto en hacer mojitos y rescatar sonrisas. 💬 Swipe right si quieres un compañero para paseos en la arena y risas garantizadas.", img:"socorrista.png"},
   {name:"Kaito (中村)", age:22, distance:"20 km", bio:"🇯🇵 Soy de Japon, trabajando en cafe tematico en Tokio. ✈️ Ahora en España un tiempo, turismo y aprendiendo español (aun es un poco difícil para mi 😅). Me gusta mucho servir cafe y hablar con clientes y es arte para mi. Corazon si sabes sitios España… o ayudarme con español 😏", img:"mayordomo1.png"}
 ];
 
-/* Elecciones por perfil */
 const eleccionesPorPerfil = {
-  gym: [
-    {pregunta:"¿Qué te gusta hacer el fin de semana?", opciones:[
-      {texto:"Ir al gimnasio 💪", efecto:10},
-      {texto:"Quedarme en casa 🛋️", efecto:-5},
-      {texto:"Salir con amigos 🍻", efecto:5}
-    ]}
-  ],
-  surf: [
-    {pregunta:"Hola, ¿sabes nadar o voy a tener que salvarte yo?", opciones:[
+  "Dylan":[
+   {pregunta:"Hola, ¿sabes nadar o voy a tener que salvarte yo?", opciones:[
     {texto:"Más o menos… dependo de mi flotador.", efecto:5, siguiente: "Jajaja, entonces tu flotador es tu héroe secreto 😎 "},
     {texto:"No se nadar, así que tendrás que mantenerme a flote… y de paso, darme tu número.", efecto:10, siguiente: "Creo que puedo hacer ambas cosas 😉 "},
     {texto:"¿Por ser una chica necesito que me salven? Quien te crees...", efecto:-10, siguiente:"No es eso... solo era una excusa para hablar... 😅 "}
@@ -308,11 +130,16 @@ const eleccionesPorPerfil = {
     {texto:"Bueno… un poco de riesgo no mata a nadie, ¿no?", siguiente: "Supongo que tienes razón jajaja " , efecto:5}
   ]}
   ],
-  mayordomo: [
-    {pregunta:"¿Qué te gusta hacer el fin de semana?", opciones:[
-      {texto:"Ir al gimnasio 💪", efecto:10},
-      {texto:"Quedarme en casa 🛋️", efecto:-5},
-      {texto:"Salir con amigos 🍻", efecto:5}
+  "Kaito (中村)":[
+    {pregunta:"¿Qué te gusta hacer?", opciones:[
+      {texto:"Ir al gimnasio", efecto:10},
+      {texto:"Quedarme en casa", efecto:-5}
+    ]}
+  ],
+  "Leonardo":[
+    {pregunta:"Fin de semana favorito?", opciones:[
+      {texto:"Salir con amigos", efecto:5},
+      {texto:"Quedarme en casa", efecto:-5}
     ]}
   ]
 };
@@ -322,35 +149,42 @@ const deck=document.getElementById("deck");
 const likeBadge=document.getElementById("likeBadge");
 const skipBadge=document.getElementById("skipBadge");
 const controls=document.getElementById("controls");
+const chatListScreen=document.getElementById("chatListScreen");
+const chatWindow=document.getElementById("chatWindow");
+const chatHeader=document.getElementById("chatHeader");
+const chatMsgs=document.getElementById("chatMsgs");
+const chatOpciones=document.getElementById("chatOpciones");
+const chatInput=document.getElementById("chatInput");
+const sendBtn=document.getElementById("sendBtn");
+const backBtn=document.getElementById("backBtn");
+const goChats=document.getElementById("goChats");
+const headerTitle=document.getElementById("headerTitle");
 
-const chatList = document.getElementById("chatList");
-const chatWindow = document.getElementById("chatWindow");
-const chatHeader = document.getElementById("chatHeader");
-const chatMsgs = document.getElementById("chatMsgs");
-const chatOpciones = document.getElementById("chatOpciones");
-const chatInput = document.getElementById("chatInput");
-const sendBtn = document.getElementById("sendBtn");
-const backBtn = document.getElementById("backBtn");
-
-let matches = [];
-let chatActual = null;
+let matches=[];
+let chatActual=null;
+let deckCards=[];
 
 /* ===================== FUNCIONES ===================== */
-function createCard(p){
-  const c=document.createElement("div");
-  c.className="card";
-  c.innerHTML=`
-    <img src="${p.img}">
-    <div class="overlay">
-      <div class="name">${p.name}, ${p.age}</div>
-      <div class="distance">${p.distance} away</div>
-      <div class="bio">${p.bio}</div>
-    </div>`;
-  deck.appendChild(c);
-  drag(c);
+function createDeck(){
+  deck.innerHTML="";
+  deckCards=[];
+  PERSONAJES.forEach((p,i)=>{
+    const c=document.createElement("div");
+    c.className="card";
+    c.innerHTML=`
+      <img src="${p.img}">
+      <div class="overlay">
+        <div class="name">${p.name}, ${p.age}</div>
+        <div class="distance">${p.distance} away</div>
+        <div class="bio">${p.bio}</div>
+      </div>`;
+    deck.appendChild(c);
+    drag(c,p);
+    deckCards.push(c);
+  });
 }
 
-function drag(card){
+function drag(card,perfil){
   let startX=0, dx=0;
   card.onpointerdown=e=>{
     startX=e.clientX;
@@ -363,88 +197,67 @@ function drag(card){
     skipBadge.style.opacity=dx<0?Math.min(-dx/120,1):0;
   };
   card.onpointerup=()=>{
-    if(dx>120) swipe(card,1);
-    else if(dx<-120) swipe(card,-1);
-    else{
-      card.style.transform="";
-      likeBadge.style.opacity=0;
-      skipBadge.style.opacity=0;
-    }
+    if(dx>120) swipe(card,perfil,1);
+    else if(dx<-120) swipe(card,perfil,-1);
+    else{ card.style.transform=""; likeBadge.style.opacity=0; skipBadge.style.opacity=0; }
     dx=0;
   };
 }
 
-function swipe(card,dir){
+function swipe(card,perfil,dir){
   card.style.transform=`translateX(${dir*800}px) rotate(${dir*25}deg)`;
   card.style.opacity=0;
-  if(dir===1){
-    const nombre = card.querySelector(".name").innerText;
-    crearMatch(nombre);
-  }
+  if(dir===1) crearMatch(perfil);
   setTimeout(()=>card.remove(),300);
 }
 
-document.getElementById("btnLike").onclick=()=>{ const c=document.querySelector(".card"); if(c) swipe(c,1);};
-document.getElementById("btnSkip").onclick=()=>{ const c=document.querySelector(".card"); if(c) swipe(c,-1);};
+document.getElementById("btnLike").onclick=()=>{ const c=deckCards[deckCards.length-1]; if(c) swipe(c,PERSONAJES[deckCards.indexOf(c)],1);};
+document.getElementById("btnSkip").onclick=()=>{ const c=deckCards[deckCards.length-1]; if(c) swipe(c,PERSONAJES[deckCards.indexOf(c)],-1);};
 
-/* ===================== MATCHES ===================== */
-function crearMatch(nombre){
-  const perfil = PERSONAJES.find(p=>`${p.name}, ${p.age}`===nombre);
-  if(!perfil) return;
-
-  // Copiar elecciones específicas del perfil
-  const eleccionesPerfil = eleccionesPorPerfil[perfil.elecciones] || [];
-  const chat = {
-    nombre: perfil.name,
-    img: perfil.img,
-    interes:50,
-    mensajes:[],
-    estado:"activo",
-    eleccionesPendientes: [...eleccionesPerfil]
-  };
+/* MATCHES */
+function crearMatch(perfil){
+  if(matches.find(m=>m.nombre===perfil.name)) return;
+  const chat={nombre:perfil.name,img:perfil.img,interes:50,mensajes:[],elecciones:[...eleccionesPorPerfil[perfil.name]]||[]};
   matches.push(chat);
   guardarProgreso();
   renderChatList();
-  abrirChat(chat);
 }
 
-/* ===================== CHAT LIST ===================== */
+/* RENDER LISTA CHATS */
 function renderChatList(){
-  chatList.style.display="flex";
-  chatList.innerHTML="";
+  chatListScreen.innerHTML="";
   matches.forEach(c=>{
     const div=document.createElement("div");
     div.className="chatItem";
     div.innerHTML=`<img src="${c.img}"><div class="info"><div class="name">${c.nombre}</div><div class="lastMsg">${c.mensajes.slice(-1)[0]?.texto||""}</div></div>`;
     div.onclick=()=>abrirChat(c);
-    chatList.appendChild(div);
+    chatListScreen.appendChild(div);
   });
 }
 
-/* ===================== ABRIR CHAT ===================== */
+/* ABRIR CHAT */
 function abrirChat(chat){
-  chatActual = chat;
+  chatActual=chat;
   deck.style.display="none";
   controls.style.display="none";
-  chatList.style.display="none";
+  chatListScreen.style.display="none";
   chatWindow.style.display="flex";
   backBtn.style.display="inline";
-  chatHeader.innerText = chat.nombre;
+  headerTitle.innerText=chat.nombre;
   renderMensajes();
-  if(chat.eleccionesPendientes.length>0) mostrarEleccion(chat.eleccionesPendientes.shift());
+  mostrarElecciones();
 }
 
-/* ===================== VOLVER ATRÁS ===================== */
-backBtn.onclick = ()=>{
+/* VOLVER ATRÁS */
+backBtn.onclick=()=>{
   chatWindow.style.display="none";
   backBtn.style.display="none";
   deck.style.display="flex";
   controls.style.display="flex";
-  renderChatList();
-  chatList.style.display="flex";
+  headerTitle.innerText="HeartChat RPG";
 };
 
-/* ===================== RENDER MENSAJES ===================== */
+/* CHAT */
 function renderMensajes(){
   chatMsgs.innerHTML="";
   chatActual.mensajes.forEach(m=>{
@@ -453,13 +266,14 @@ function renderMensajes(){
     div.innerText=m.texto;
     chatMsgs.appendChild(div);
   });
-  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  chatMsgs.scrollTop=chatMsgs.scrollHeight;
 }
 
-/* ===================== ELECCIONES RPG ===================== */
-function mostrarEleccion(e){
+function mostrarElecciones(){
   chatOpciones.innerHTML="";
-  e.opciones.forEach(o=>{
+  const next=chatActual.elecciones.shift();
+  if(!next) return;
+  next.opciones.forEach(o=>{
     const btn=document.createElement("button");
     btn.innerText=o.texto;
     btn.onclick=()=>{
@@ -467,66 +281,59 @@ function mostrarEleccion(e){
       chatActual.mensajes.push({autor:"yo",texto:o.texto});
       renderMensajes();
       chatOpciones.innerHTML="";
-      setTimeout(respuestaAuto,Math.random()*2000+1000);
+      setTimeout(respuestaAuto,1000);
       guardarProgreso();
     };
     chatOpciones.appendChild(btn);
   });
 }
 
-/* ===================== RESPUESTA AUTOMATICA ===================== */
 function respuestaAuto(){
-  if(chatActual.estado!=="activo") return;
-  if(chatActual.interes<=0){ chatActual.estado="ghost"; chatActual.mensajes.push({autor:"ella",texto:"..."}); renderMensajes(); return; }
-  let texto;
+  if(!chatActual) return;
+  let texto="ok";
   if(chatActual.interes>70) texto="Me caes muy bien 😏";
   else if(chatActual.interes<30) texto="ok";
-  else texto="Jajaja 😄";
   chatActual.mensajes.push({autor:"ella",texto});
   renderMensajes();
-
-  const next = chatActual.eleccionesPendientes.shift();
-  if(next) mostrarEleccion(next);
-  guardarProgreso();
+  mostrarElecciones();
 }
 
-/* ===================== INPUT MENSAJE ===================== */
+/* INPUT */
 sendBtn.onclick=()=>{
-  const txt = chatInput.value.trim();
+  const txt=chatInput.value.trim();
   if(!txt) return;
   chatActual.mensajes.push({autor:"yo",texto:txt});
-  evaluarMensaje(txt);
   chatInput.value="";
   renderMensajes();
-  setTimeout(respuestaAuto,Math.random()*1000+1000);
+  setTimeout(respuestaAuto,1000);
   guardarProgreso();
 };
 
-function evaluarMensaje(txt){
-  if(txt.toLowerCase().includes("hola")) chatActual.interes+=5;
-  else if(txt.toLowerCase().includes("gym")) chatActual.interes+=8;
-  else if(txt.length<3) chatActual.interes-=5;
-  else chatActual.interes+=2;
-}
-
-/* ===================== LOCALSTORAGE ===================== */
+/* LOCALSTORAGE */
 function guardarProgreso(){
-  localStorage.setItem("heartChat",JSON.stringify(matches));
+  localStorage.setItem("heartChatRPG",JSON.stringify(matches));
 }
-
 function cargarProgreso(){
-  const data = localStorage.getItem("heartChat");
+  const data=localStorage.getItem("heartChatRPG");
   if(!data) return;
-  matches = JSON.parse(data);
-  if(matches.length>0) renderChatList();
+  matches=JSON.parse(data);
+  renderChatList();
 }
 
-/* ===================== INICIO ===================== */
-PERSONAJES.forEach(createCard);
+/* IR A CHAT LIST */
+goChats.onclick=()=>{
+  deck.style.display="none";
+  controls.style.display="none";
+  chatWindow.style.display="none";
+  chatListScreen.style.display="flex";
+  headerTitle.innerText="Mis Chats";
+  backBtn.style.display="inline";
+};
+
+/* INICIO */
+createDeck();
 cargarProgreso();
 </script>
 
 </body>
 </html>
-
-
