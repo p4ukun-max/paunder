@@ -33,6 +33,16 @@ header{
   color:#fff;
   font-weight:700;
   text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+/* Flecha atrás */
+#backBtn{
+  font-size:1.5rem;
+  cursor:pointer;
+  display:none;
 }
 
 /* DECK */
@@ -114,7 +124,7 @@ header{
 
 .skip{background:#222;color:#ff4458}
 .star{background:#222;color:#3b82f6}
-.like{background:#222;color:#22c55e}
+.like{background:#222;color:#ff79c6}
 
 /* BADGES */
 .badge{
@@ -133,7 +143,7 @@ header{
 .card[data-i="1"]{transform:scale(.97) translateY(8px);opacity:.9}
 .card[data-i="2"]{transform:scale(.94) translateY(16px);opacity:.8}
 
-/* CHAT */
+/* CHAT LIST */
 #chatList{
   display:none;
   flex-direction:column;
@@ -164,6 +174,7 @@ header{
   opacity:0.7;
 }
 
+/* CHAT WINDOW */
 #chatWindow{
   display:none;
   flex-direction:column;
@@ -178,11 +189,11 @@ header{
 .msg{
   margin:6px 0;
   padding:6px 10px;
-  border-radius:12px;
+  border-radius:16px;
   max-width:70%;
 }
 .msg.yo{
-  background:#22c55e;
+  background:#ff79c6;
   align-self:flex-end;
 }
 .msg.ella{
@@ -210,7 +221,7 @@ header{
   margin-left:6px;
   border:none;
   border-radius:12px;
-  background:#22c55e;
+  background:#ff79c6;
   color:white;
   cursor:pointer;
 }
@@ -220,14 +231,18 @@ header{
 <body>
 <div class="app">
 
-<header>HeartChat RPG</header>
+<header>
+  <span id="backBtn">←</span>
+  <span>HeartChat RPG</span>
+  <span></span>
+</header>
 
 <div class="deck" id="deck">
   <div class="badge like-badge" id="likeBadge">LIKE</div>
   <div class="badge skip-badge" id="skipBadge">NOPE</div>
 </div>
 
-<div class="controls">
+<div class="controls" id="controls">
   <button class="circle-btn skip" id="btnSkip">✕</button>
   <button class="circle-btn star">★</button>
   <button class="circle-btn like" id="btnLike">♥</button>
@@ -252,35 +267,68 @@ header{
 <script>
 /* ===================== DATOS ===================== */
 const PERSONAJES=[
-  {name:"Leonardo", age:27, distance:"4 km", bio:"Me gusta practicar deporte y voy a menudo al gimnasio", img:"gympau.png"},
-  {name:"Camila", age:25, distance:"2 km", bio:"Amo el arte y viajar por el mundo", img:"camila.png"},
-  {name:"Sofia", age:22, distance:"3 km", bio:"Fan de Netflix y los gatos 🐱", img:"sofia.png"}
+  {name:"Leonardo", age:34, distance:"4 km", bio:"Me gusta practicar deporte y voy al gimnasio", img:"gympau.png"},
+  {name:"Dylan", age:25, distance:"45 km", bio:"🌊 Socorrista de día, buscador de aventuras de noche.
+☀️ Rubio, con amor por el sol, las olas y los atardeceres en la playa.
+🏄‍♂️ Si sabes surfear, tenemos competencia; si no, te enseño.
+🍹 Experto en hacer mojitos y rescatar sonrisas.
+💬 Swipe right si quieres un compañero para paseos en la arena y risas garantizadas.", img:"socorrista.png"},
+  {name:"Kaito (中村)", age:22, distance:"20 km", bio:"🇯🇵 Soy de Japon, trabajando en cafe tematico en Tokio.
+✈️ Ahora en España un tiempo, turismo y aprendiendo español (aun es un poco difícil para mi 😅).
+Me gusta mucho servir cafe y hablar con clientes y es arte para mi.
+Corazon si sabes sitios España… o ayudarme con español 😏", img:"mayordomo1.png"}
 ];
 
-/* Elecciones RPG */
-const eleccionesRPG = [
-  {
-    pregunta: "¿Qué te gusta hacer el fin de semana?",
-    opciones: [
-      { texto: "Ir al gimnasio 💪", efecto: 10 },
-      { texto: "Quedarme en casa 🛋️", efecto: -5 },
-      { texto: "Salir con amigos 🍻", efecto: 5 },
-    ]
-  },
-  {
-    pregunta: "¿Cuál es tu comida favorita?",
-    opciones: [
-      { texto: "Pizza 🍕", efecto: 5 },
-      { texto: "Ensalada 🥗", efecto: 2 },
-      { texto: "Carne asada 🥩", efecto: 8 },
-    ]
-  }
-];
+/* Elecciones por perfil */
+const eleccionesPorPerfil = {
+  gym: [
+    {pregunta:"¿Qué te gusta hacer el fin de semana?", opciones:[
+      {texto:"Ir al gimnasio 💪", efecto:10},
+      {texto:"Quedarme en casa 🛋️", efecto:-5},
+      {texto:"Salir con amigos 🍻", efecto:5}
+    ]}
+  ],
+  surf: [
+    {pregunta:"Hola, ¿sabes nadar o voy a tener que salvarte yo?", opciones:[
+    {texto:"Más o menos… dependo de mi flotador.", efecto:5, siguiente: "Jajaja, entonces tu flotador es tu héroe secreto 😎 "},
+    {texto:"No se nadar, así que tendrás que mantenerme a flote… y de paso, darme tu número.", efecto:10, siguiente: "Creo que puedo hacer ambas cosas 😉 "},
+    {texto:"¿Por ser una chica necesito que me salven? Quien te crees...", efecto:-10, siguiente:"No es eso... solo era una excusa para hablar... 😅 "}
+  ]},
+  {pregunta:"¿prefieres empezar en la piscina o en la playa?”, opciones:[
+    {texto:"Entrenamiento intenso suena bien… siempre quise hacer que un socorrista corra detrás de mí", efecto:-10, siguiente: "Ya veo 🤷 " },
+    {texto:"Podemos ir a la piscina… aunque no prometo no ahogarme.", efecto:5, siguiente: "Bueno, la piscina entonces "},
+    {texto:"La playa suena genial, así puedo practicar nadar y reírme un poco contigo",efecto:10, siguiente: "Bueno, la playa entonces "}
+  ]},
+    {pregunta:"Pero cuidado, rescatar corazones es más difícil que nadar.", opciones:[
+    {texto:"Espero que no sea demasiado difícil.", efecto:5, siguiente: "Soy un chico experimentado tu tranquila 😌 " },
+    {texto:"Entonces me siento en buenas manos.", efecto:10, siguiente: "¿En serio lo crees? 💪 "},
+    {texto:"Si me ahogo, al menos será dramático.", siguiente: "Bueno... ☹️ " , efecto:-10}
+  ]},
+  {pregunta:"¿Y tú cómo decides si salvar a alguien o no?", opciones:[
+    {texto:"Normalmente dejo que se hundan… me divierto viéndolo.", efecto:-10, siguiente: "Mi trabajo es evitar que se hundan 😅 " },
+    {texto:"Depende del humor del día.", efecto:5, siguiente: "Comprendo. "},
+    {texto:"Me guío por la sonrisa… y creo que contigo ya hay motivo suficiente.", siguiente: "Que bueno 😊 " , efecto:10}
+  ]},
+    {pregunta:"Eso suena peligroso… pero intrigante", opciones:[
+    {texto:"Solo si hay alguien como tú cerca para rescatarme.", efecto:10, siguiente: "Jajaja ya veo, " },
+    {texto:"Me gusta ver cómo otros se complican la vida", efecto:-10, siguiente: "Eso no es bueno... "},
+    {texto:"Bueno… un poco de riesgo no mata a nadie, ¿no?", siguiente: "Supongo que tienes razón jajaja " , efecto:5}
+  ]}
+  ],
+  mayordomo: [
+    {pregunta:"¿Qué te gusta hacer el fin de semana?", opciones:[
+      {texto:"Ir al gimnasio 💪", efecto:10},
+      {texto:"Quedarme en casa 🛋️", efecto:-5},
+      {texto:"Salir con amigos 🍻", efecto:5}
+    ]}
+  ]
+};
 
 /* ===================== VARIABLES ===================== */
 const deck=document.getElementById("deck");
 const likeBadge=document.getElementById("likeBadge");
 const skipBadge=document.getElementById("skipBadge");
+const controls=document.getElementById("controls");
 
 const chatList = document.getElementById("chatList");
 const chatWindow = document.getElementById("chatWindow");
@@ -289,6 +337,7 @@ const chatMsgs = document.getElementById("chatMsgs");
 const chatOpciones = document.getElementById("chatOpciones");
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
+const backBtn = document.getElementById("backBtn");
 
 let matches = [];
 let chatActual = null;
@@ -310,19 +359,16 @@ function createCard(p){
 
 function drag(card){
   let startX=0, dx=0;
-
   card.onpointerdown=e=>{
     startX=e.clientX;
     card.setPointerCapture(e.pointerId);
   };
-
   card.onpointermove=e=>{
     dx=e.clientX-startX;
     card.style.transform=`translateX(${dx}px) rotate(${dx/15}deg)`;
     likeBadge.style.opacity=dx>0?Math.min(dx/120,1):0;
     skipBadge.style.opacity=dx<0?Math.min(-dx/120,1):0;
   };
-
   card.onpointerup=()=>{
     if(dx>120) swipe(card,1);
     else if(dx<-120) swipe(card,-1);
@@ -338,35 +384,30 @@ function drag(card){
 function swipe(card,dir){
   card.style.transform=`translateX(${dir*800}px) rotate(${dir*25}deg)`;
   card.style.opacity=0;
-
   if(dir===1){
     const nombre = card.querySelector(".name").innerText;
     crearMatch(nombre);
   }
-
   setTimeout(()=>card.remove(),300);
 }
 
-document.getElementById("btnLike").onclick=()=>{
-  const c=document.querySelector(".card");
-  if(c) swipe(c,1);
-};
-document.getElementById("btnSkip").onclick=()=>{
-  const c=document.querySelector(".card");
-  if(c) swipe(c,-1);
-};
+document.getElementById("btnLike").onclick=()=>{ const c=document.querySelector(".card"); if(c) swipe(c,1);};
+document.getElementById("btnSkip").onclick=()=>{ const c=document.querySelector(".card"); if(c) swipe(c,-1);};
 
 /* ===================== MATCHES ===================== */
 function crearMatch(nombre){
   const perfil = PERSONAJES.find(p=>`${p.name}, ${p.age}`===nombre);
   if(!perfil) return;
 
+  // Copiar elecciones específicas del perfil
+  const eleccionesPerfil = eleccionesPorPerfil[perfil.elecciones] || [];
   const chat = {
     nombre: perfil.name,
     img: perfil.img,
-    interes: 50,
-    mensajes: [],
-    estado: "activo"
+    interes:50,
+    mensajes:[],
+    estado:"activo",
+    eleccionesPendientes: [...eleccionesPerfil]
   };
   matches.push(chat);
   guardarProgreso();
@@ -379,9 +420,9 @@ function renderChatList(){
   chatList.style.display="flex";
   chatList.innerHTML="";
   matches.forEach(c=>{
-    const div = document.createElement("div");
+    const div=document.createElement("div");
     div.className="chatItem";
-    div.innerHTML=`<img src="${c.img}"><div class="info"><div class="name">${c.nombre}</div><div class="lastMsg">${c.mensajes.slice(-1)[0]?.texto || ""}</div></div>`;
+    div.innerHTML=`<img src="${c.img}"><div class="info"><div class="name">${c.nombre}</div><div class="lastMsg">${c.mensajes.slice(-1)[0]?.texto||""}</div></div>`;
     div.onclick=()=>abrirChat(c);
     chatList.appendChild(div);
   });
@@ -391,11 +432,24 @@ function renderChatList(){
 function abrirChat(chat){
   chatActual = chat;
   deck.style.display="none";
+  controls.style.display="none";
   chatList.style.display="none";
   chatWindow.style.display="flex";
+  backBtn.style.display="inline";
   chatHeader.innerText = chat.nombre;
   renderMensajes();
+  if(chat.eleccionesPendientes.length>0) mostrarEleccion(chat.eleccionesPendientes.shift());
 }
+
+/* ===================== VOLVER ATRÁS ===================== */
+backBtn.onclick = ()=>{
+  chatWindow.style.display="none";
+  backBtn.style.display="none";
+  deck.style.display="flex";
+  controls.style.display="flex";
+  renderChatList();
+  chatList.style.display="flex";
+};
 
 /* ===================== RENDER MENSAJES ===================== */
 function renderMensajes(){
@@ -410,18 +464,17 @@ function renderMensajes(){
 }
 
 /* ===================== ELECCIONES RPG ===================== */
-let eleccionesPendientes = [...eleccionesRPG];
 function mostrarEleccion(e){
-  chatOpciones.innerHTML = "";
+  chatOpciones.innerHTML="";
   e.opciones.forEach(o=>{
-    const btn = document.createElement("button");
-    btn.innerText = o.texto;
-    btn.onclick = ()=>{
-      chatActual.interes += o.efecto;
-      chatActual.mensajes.push({autor:"yo", texto:o.texto});
+    const btn=document.createElement("button");
+    btn.innerText=o.texto;
+    btn.onclick=()=>{
+      chatActual.interes+=o.efecto;
+      chatActual.mensajes.push({autor:"yo",texto:o.texto});
       renderMensajes();
       chatOpciones.innerHTML="";
-      setTimeout(respuestaAuto, Math.random()*2000+1000);
+      setTimeout(respuestaAuto,Math.random()*2000+1000);
       guardarProgreso();
     };
     chatOpciones.appendChild(btn);
@@ -431,20 +484,15 @@ function mostrarEleccion(e){
 /* ===================== RESPUESTA AUTOMATICA ===================== */
 function respuestaAuto(){
   if(chatActual.estado!=="activo") return;
-
-  // ghosting
-  if(chatActual.interes<=0){ chatActual.estado="ghost"; chatActual.mensajes.push({autor:"ella", texto:"..."}); renderMensajes(); return; }
-
+  if(chatActual.interes<=0){ chatActual.estado="ghost"; chatActual.mensajes.push({autor:"ella",texto:"..."}); renderMensajes(); return; }
   let texto;
   if(chatActual.interes>70) texto="Me caes muy bien 😏";
   else if(chatActual.interes<30) texto="ok";
   else texto="Jajaja 😄";
-
-  chatActual.mensajes.push({autor:"ella", texto});
+  chatActual.mensajes.push({autor:"ella",texto});
   renderMensajes();
 
-  // elecciones RPG
-  const next = eleccionesPendientes.shift();
+  const next = chatActual.eleccionesPendientes.shift();
   if(next) mostrarEleccion(next);
   guardarProgreso();
 }
@@ -453,11 +501,11 @@ function respuestaAuto(){
 sendBtn.onclick=()=>{
   const txt = chatInput.value.trim();
   if(!txt) return;
-  chatActual.mensajes.push({autor:"yo", texto:txt});
+  chatActual.mensajes.push({autor:"yo",texto:txt});
   evaluarMensaje(txt);
   chatInput.value="";
   renderMensajes();
-  setTimeout(respuestaAuto, Math.random()*1000+1000);
+  setTimeout(respuestaAuto,Math.random()*1000+1000);
   guardarProgreso();
 };
 
@@ -470,18 +518,14 @@ function evaluarMensaje(txt){
 
 /* ===================== LOCALSTORAGE ===================== */
 function guardarProgreso(){
-  localStorage.setItem("heartChat", JSON.stringify({matches, eleccionesPendientes}));
+  localStorage.setItem("heartChat",JSON.stringify(matches));
 }
 
 function cargarProgreso(){
   const data = localStorage.getItem("heartChat");
   if(!data) return;
-  const saved = JSON.parse(data);
-  matches = saved.matches || [];
-  eleccionesPendientes = saved.eleccionesPendientes || [...eleccionesRPG];
-  if(matches.length>0){
-    renderChatList();
-  }
+  matches = JSON.parse(data);
+  if(matches.length>0) renderChatList();
 }
 
 /* ===================== INICIO ===================== */
