@@ -564,7 +564,7 @@ function swipe(card, perfil, dir){
 document.getElementById("btnLike").onclick=()=>{ const c=deckCards[deckCards.length-1]; if(c) swipe(c,PERSONAJES[deckCards.indexOf(c)],1);};
 document.getElementById("btnSkip").onclick=()=>{ const c=deckCards[deckCards.length-1]; if(c) swipe(c,PERSONAJES[deckCards.indexOf(c)],-1);};
 
-/* MATCHES */
+/* MATCHES 
 function yaTieneMatch(nombre){
   return matches.some(m => m.nombre === nombre);
 }
@@ -591,6 +591,7 @@ function crearMatch(perfil){
   createDeck();
 });
 }
+	/*
 function abrirListaChats(){
   deck.style.display = "none";
   controls.style.display = "none";
@@ -601,7 +602,7 @@ function abrirListaChats(){
   backBtn.style.display = "inline";
 }
 
-/* RENDER LISTA CHATS */
+/* RENDER LISTA CHATS 
 function renderChatList(){
   chatListScreen.innerHTML = "";
 
@@ -622,7 +623,7 @@ function renderChatList(){
     chatListScreen.appendChild(div);
   });
 }
-/* ABRIR CHAT */
+/* ABRIR CHAT 
 function abrirChat(chat){
   chatActual = chat;
   deck.style.display = "none";
@@ -638,7 +639,7 @@ function abrirChat(chat){
 	  mostrarPregunta();
 	}
 }
-/* VOLVER ATRÁS */
+/* VOLVER ATRÁS 
 backBtn.onclick = () => {
   chatWindow.style.display = "none";
   chatListScreen.style.display = "none";
@@ -650,7 +651,7 @@ backBtn.onclick = () => {
   mostrarLogo();
 };
 
-/* CHAT */
+/* CHAT 
 function renderMensajes(){
   chatMsgs.innerHTML="";
   chatActual.mensajes.forEach(m=>{
@@ -722,7 +723,7 @@ function respuestaAuto(){
   mostrarElecciones();
 }
 
-/* INPUT */
+/* INPUT 
 sendBtn.onclick=()=>{
   const txt=chatInput.value.trim();
   if(!txt) return;
@@ -733,7 +734,7 @@ sendBtn.onclick=()=>{
   guardarProgreso();
 };
 
-/* LOCALSTORAGE */
+/* LOCALSTORAGE 
 function guardarProgreso(){
   localStorage.setItem("heartChatRPG",JSON.stringify(matches));
 }
@@ -744,7 +745,7 @@ function cargarProgreso(){
   renderChatList();
 }
 
-/* IR A CHAT LIST */
+/* IR A CHAT LIST 
 goChats.onclick = () => {
   deck.style.display = "none";
   controls.style.display = "none";
@@ -755,12 +756,13 @@ goChats.onclick = () => {
   backBtn.style.display = "inline";
 };
 
-/* INICIO */
+/* INICIO *//*
 createDeck();
-cargarProgreso();
+cargarProgreso();*/
 </script>
 
 </body>
 </html>
+
 
 
