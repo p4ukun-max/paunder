@@ -117,6 +117,40 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
   font-size:1.1rem;
   font-weight:700;
 }
+#matchOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+}
+
+#matchOverlay.hidden{
+  display:none;
+}
+
+.matchBox{
+  text-align:center;
+  animation:matchPop 0.8s ease-out;
+}
+
+.matchBox h1{
+  font-size:3rem;
+  margin-bottom:10px;
+}
+
+.matchBox p{
+  font-size:1.2rem;
+  opacity:0.8;
+}
+
+@keyframes matchPop{
+  0%{transform:scale(0);opacity:0}
+  70%{transform:scale(1.1)}
+  100%{transform:scale(1);opacity:1}
+}
 </style>
 </head>
 
@@ -159,6 +193,15 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
   </div>
 </div>
 
+</div>
+<!-- MATCH OVERLAY -->
+<audio id="matchSound" src="sounds/match.mp3" preload="auto"></audio>
+
+<div id="matchOverlay" class="hidden">
+  <div class="matchBox">
+    <h1>💖 ¡MATCH! 💖</h1>
+    <p>Tenéis conexión</p>
+  </div>
 </div>
 
 <script>
@@ -235,7 +278,19 @@ const eleccionesPorPerfil = {
     ]}
   ]
 };
+function mostrarAnimacionMatch(callback){
+  const overlay = document.getElementById("matchOverlay");
+  const sound = document.getElementById("matchSound");
 
+  overlay.classList.remove("hidden");
+  sound.currentTime = 0;
+  sound.play().catch(()=>{}); // por si el navegador bloquea
+
+  setTimeout(() => {
+    overlay.classList.add("hidden");
+    callback && callback();
+  }, 2500); // duración animación
+}
 /* ===================== VARIABLES ===================== */
 const deck=document.getElementById("deck");
 const likeBadge=document.getElementById("likeBadge");
@@ -305,7 +360,7 @@ function swipe(card, perfil, dir){
   card.style.opacity = 0;
 
   if(dir === 1){
-    const delay = 60000 + Math.random() * 540000; // 1–10 minutos
+   const delay = 10000 + Math.random() * 290000; // 1–10 minutos
 
     setTimeout(() => {
       crearMatch(perfil);
@@ -345,8 +400,10 @@ function crearMatch(perfil){
   renderChatList();
 
   // 👉 Abrir listado de chats
+  mostrarAnimacionMatch(() => {
   abrirListaChats();
   createDeck();
+	});
 }
 function abrirListaChats(){
   deck.style.display = "none";
