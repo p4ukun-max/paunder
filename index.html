@@ -54,6 +54,16 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 #chatInputWrapper{display:flex;padding:10px;}
 #chatInput{flex:1;padding:6px 10px;border-radius:12px;border:none;}
 #sendBtn{padding:6px 12px;margin-left:6px;border:none;border-radius:12px;background:#ff79c6;color:white;cursor:pointer;}
+#logoTitle,
+#chatsTitle{
+  height:28px;
+  object-fit:contain;
+}
+
+#textTitle{
+  font-size:1.1rem;
+  font-weight:700;
+}
 </style>
 </head>
 
@@ -62,7 +72,11 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 
 <header>
   <span id="backBtn">←</span>
-  <span id="headerTitle">Paunder</span>
+  <span id="headerTitle">
+  <img id="logoTitle" src="img/paunder.png" alt="Paunder">
+  <img id="chatsTitle" src="img/mischats.png" alt="Mis Chats" style="display:none">
+  <span id="textTitle" style="display:none"></span>
+</span>
   <span><button id="goChats" style="background:none;border:none;color:white;cursor:pointer;">Chats</button></span>
 </header>
 
@@ -95,14 +109,35 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 </div>
 
 <script>
+const logoTitle = document.getElementById("logoTitle");
+const chatsTitle = document.getElementById("chatsTitle");
+const textTitle = document.getElementById("textTitle");
+function mostrarLogo(){
+  logoTitle.style.display = "block";
+  chatsTitle.style.display = "none";
+  textTitle.style.display = "none";
+}
+
+function mostrarChatsImg(){
+  logoTitle.style.display = "none";
+  chatsTitle.style.display = "block";
+  textTitle.style.display = "none";
+}
+
+function mostrarTextoTitulo(texto){
+  logoTitle.style.display = "none";
+  chatsTitle.style.display = "none";
+  textTitle.style.display = "block";
+  textTitle.innerText = texto;
+}
 /* ===================== DATOS ===================== */
 const PERSONAJES=[
   {name:"Leonardo", age:36, distance:"14 km", bio:"Voy al gym casi todos los días 💪, levanto pesado y hago siempre la misma rutina. Hablo poco 🗿, pienso menos. Vivo de proteína, preentreno y frases hechas 🥤. No destaco por mis ideas pero soy constante y físicamente fuerte 🏋️‍♂️.", img:"img/gym1.png"},
   {name:"Dylan", age:25, distance:"45 km", bio:"🌊 Socorrista de día, buscador de aventuras de noche. ☀️ Rubio, con amor por el sol, las olas y los atardeceres en la playa. 🏄‍♂️ Si sabes surfear, tenemos competencia; si no, te enseño. 🍹 Experto en hacer mojitos y rescatar sonrisas. 💬 Swipe right si quieres un compañero para paseos en la arena y risas garantizadas.", img:"img/socorrista1.png"},
-  {name:"Kaito (中村)", age:22, distance:"20 km", bio:"🇯🇵 Soy de Japon, trabajando en cafe tematico en Tokio. ✈️ Ahora en España un tiempo, turismo y aprendiendo español (aun es un poco difícil para mi 😅). Me gusta mucho servir cafe y hablar con clientes y es arte para mi. Corazon si sabes sitios España… o ayudarme con español 😏", img:"img/mayordomo1.png"}
-  {name:"Pau Rivas", age:29, distance:"120 km", bio:"Trabajo salvando vidas, pero también disfruto viajar, comer bien y desconectar del hospital. Busco conexión real, risas honestas y alguien con quien sumar, no pasar el tiempo.",  img:"img/medico1.png"},
+  {name:"Kaito (中村)", age:22, distance:"20 km", bio:"🇯🇵 Soy de Japon, trabajando en cafe tematico en Tokio. ✈️ Ahora en España un tiempo, turismo y aprendiendo español (aun es un poco difícil para mi 😅). Me gusta mucho servir cafe y hablar con clientes y es arte para mi. Corazon si sabes sitios España… o ayudarme con español 😏", img:"img/mayordomo1.png"},
+  {name:"Pau Rivas", age:29, distance:"120 km", bio:"Trabajo salvando vidas, pero también disfruto viajar, comer bien y desconectar del hospital. Busco conexión real, risas honestas y alguien con quien sumar, no pasar el tiempo.", img:"img/medico1.png"},
   {name:"Jan", age:18, distance:"45 km", bio:"Estudiando para exámenes pero listo para planes espontáneos 😌 Fan de las noches largas, memes malos y risas reales Swipe si te gusta reírte de la vida (y de los lunes).", img:"img/estudiante1.png"},
-  {name:"Park Paujin", age:32, distance:"140 km", bio:"Hago música 🎧🎶, escucho K-pop 💿✨ y probablemente te dedicaría una canción sin avisar 💌🎵 Busco a alguien que vibre conmigo 💫, aunque sea fuera de tempo ⏳🎼 Bonus si cantas en el coche 🚗🎤", img:"img/kpoper1.png"}
+  {name:"Park Paujin", age:32, distance:"140 km", bio:"Hago música 🎧🎶, escucho K-pop 💿✨ y probablemente te dedicaría una canción sin avisar 💌🎵 Busco a alguien que vibre conmigo 💫, aunque sea fuera de tempo ⏳🎼 Bonus si cantas en el coche 🚗🎤", img:"img/kpoper1.png"},
   {name:"Raven Teo", age:25, distance:"140 km", bio:"No me gustan los chistes ni la gente que los usa para evitar decir algo real. Prefiero el silencio, las conversaciones profundas y la honestidad brutal.", img:"img/gotico2.png"}
 ];
 
@@ -255,7 +290,7 @@ function abrirListaChats(){
   chatWindow.style.display = "none";
   chatListScreen.style.display = "flex";
 
-  headerTitle.innerText = "Mis Chats";
+  mostrarChatsImg();
   backBtn.style.display = "inline";
 }
 
@@ -282,17 +317,18 @@ function renderChatList(){
 }
 /* ABRIR CHAT */
 function abrirChat(chat){
-  chatActual=chat;
-  deck.style.display="none";
-  controls.style.display="none";
-  chatListScreen.style.display="none";
-  chatWindow.style.display="flex";
-  backBtn.style.display="inline";
-  headerTitle.innerText=chat.nombre;
+  chatActual = chat;
+  deck.style.display = "none";
+  controls.style.display = "none";
+  chatListScreen.style.display = "none";
+  chatWindow.style.display = "flex";
+
+  mostrarTextoTitulo(chat.nombre);
+  backBtn.style.display = "inline";
+
   renderMensajes();
   mostrarElecciones();
 }
-
 /* VOLVER ATRÁS */
 backBtn.onclick = () => {
   chatWindow.style.display = "none";
@@ -301,9 +337,9 @@ backBtn.onclick = () => {
 
   deck.style.display = "flex";
   controls.style.display = "flex";
-  headerTitle.innerText = "Paunder";
-};
 
+  mostrarLogo();
+};
 
 /* CHAT */
 function renderMensajes(){
@@ -369,13 +405,14 @@ function cargarProgreso(){
 }
 
 /* IR A CHAT LIST */
-goChats.onclick=()=>{
-  deck.style.display="none";
-  controls.style.display="none";
-  chatWindow.style.display="none";
-  chatListScreen.style.display="flex";
-  headerTitle.innerText="Mis Chats";
-  backBtn.style.display="inline";
+goChats.onclick = () => {
+  deck.style.display = "none";
+  controls.style.display = "none";
+  chatWindow.style.display = "none";
+  chatListScreen.style.display = "flex";
+
+  mostrarChatsImg();
+  backBtn.style.display = "inline";
 };
 
 /* INICIO */
@@ -385,4 +422,3 @@ cargarProgreso();
 
 </body>
 </html>
-
