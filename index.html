@@ -22,14 +22,24 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 #backBtn{font-size:1.5rem;cursor:pointer;display:none;}
 
 /* DECK */
-.deck{flex:1;position:relative;overflow:hidden;}
+.deck{
+  flex:1;
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
 .card{
   position:absolute;
-  width:100vw;
+  width:100%;
+  max-width:420px;
   height:70vh;
-  left:0;
+  left:50%;
   top:0;
-  overflow:hidden;   /* 🔴 CLAVE */
+  transform:translateX(-50%);
+  overflow:hidden;
   background:#000;
   touch-action:none;
 }
