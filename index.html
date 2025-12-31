@@ -227,12 +227,12 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 <audio id="matchSound" src="paunder.mp3" preload="auto"></audio>
 
 <div id="matchOverlay" class="hidden">
-  <div class="matchBox">
+  <img id="matchImg">
+  <div class="matchText">
     <h1>💖 ¡MATCH! 💖</h1>
     <p>Tenéis conexión</p>
   </div>
 </div>
-
 <script>
 const logoTitle = document.getElementById("logoTitle");
 const chatsTitle = document.getElementById("chatsTitle");
@@ -257,12 +257,12 @@ function mostrarTextoTitulo(texto){
 }
 /* ===================== DATOS ===================== */
 const PERSONAJES=[
-  {name:"Leonardo", age:36, distance:"14 km", bio:"Voy al gym casi todos los días 💪, levanto pesado y hago siempre la misma rutina. Hablo poco 🗿, pienso menos. Vivo de proteína, preentreno y frases hechas 🥤. No destaco por mis ideas pero soy constante y físicamente fuerte 🏋️‍♂️.", img:"img/gym1.png"},
-  {name:"Dylan", age:25, distance:"45 km", bio:"🌊 Socorrista de día, buscador de aventuras de noche. ☀️ Rubio, con amor por el sol, las olas y los atardeceres en la playa. 🏄‍♂️ Si sabes surfear, tenemos competencia; si no, te enseño. 🍹 Experto en hacer mojitos y rescatar sonrisas. 💬 Swipe right si quieres un compañero para paseos en la arena y risas garantizadas.", img:"img/socorrista1.png"},
-  {name:"Kaito (中村)", age:22, distance:"20 km", bio:"🇯🇵 Soy de Japon, trabajando en cafe tematico en Tokio. ✈️ Ahora en España un tiempo, turismo y aprendiendo español (aun es un poco difícil para mi 😅). Me gusta mucho servir cafe y hablar con clientes y es arte para mi. Corazon si sabes sitios España… o ayudarme con español 😏", img:"img/mayordomo1.png"},
+  {name:"Leonardo", age:36, distance:"14 km", bio:"Voy al gym casi todos los días 💪, levanto pesado y hago siempre la misma rutina.<br> Hablo poco 🗿, pienso menos. <br> Vivo de proteína, preentreno y frases hechas 🥤.<br> No destaco por mis ideas pero soy constante y físicamente fuerte 🏋️‍♂️.", img:"img/gym1.png"},
+  {name:"Dylan", age:25, distance:"45 km", bio:"🌊 Socorrista de día, buscador de aventuras de noche. <br> ☀️ Rubio, con amor por el sol, las olas y los atardeceres en la playa.<br> 🏄‍♂️ Si sabes surfear, tenemos competencia; si no, te enseño. 🍹 <br> Experto en hacer mojitos y rescatar sonrisas. <br> 💬 Swipe right si quieres un compañero para paseos en la arena y risas garantizadas.", img:"img/socorrista1.png"},
+  {name:"Kaito (中村)", age:22, distance:"20 km", bio:"🇯🇵 Soy de Japon, trabajando en cafe tematico en Tokio.<br>✈️ Ahora en España un tiempo, turismo y aprendiendo español (aun es un poco difícil para mi 😅). <br> Me gusta mucho servir cafe y hablar con clientes y es arte para mi. <br> LIKE si sabes sitios España… o ayudarme con español 😏", img:"img/mayordomo1.png"},
   {name:"Pau Rivas", age:29, distance:"120 km", bio:"Trabajo salvando vidas, pero también disfruto viajar, comer bien y desconectar del hospital. Busco conexión real, risas honestas y alguien con quien sumar, no pasar el tiempo.", img:"img/medico1.png"},
-  {name:"Jan", age:18, distance:"45 km", bio:"Estudiando para exámenes pero listo para planes espontáneos 😌 Fan de las noches largas, memes malos y risas reales Swipe si te gusta reírte de la vida (y de los lunes).", img:"img/estudiante1.png"},
-  {name:"Park Paujin", age:32, distance:"140 km", bio:"Hago música 🎧🎶, escucho K-pop 💿✨ y probablemente te dedicaría una canción sin avisar 💌🎵 Busco a alguien que vibre conmigo 💫, aunque sea fuera de tempo ⏳🎼 Bonus si cantas en el coche 🚗🎤", img:"img/kpoper1.png"},
+  {name:"Jan", age:18, distance:"45 km", bio:"Estudiando para exámenes pero listo para planes espontáneos 😌 <br> Fan de las noches largas, memes malos y risas reales Swipe si te gusta reírte de la vida (y de los lunes).", img:"img/estudiante1.png"},
+  {name:"Park Paujin", age:32, distance:"140 km", bio:"Hago música 🎧🎶, escucho K-pop 💿✨ y probablemente te dedicaría una canción sin avisar 💌🎵 <br> Busco a alguien que vibre conmigo 💫, aunque sea fuera de tempo ⏳🎼 <br> Bonus si cantas en el coche 🚗🎤", img:"img/kpoper1.png"},
   {name:"Raven Teo", age:25, distance:"140 km", bio:"No me gustan los chistes ni la gente que los usa para evitar decir algo real. Prefiero el silencio, las conversaciones profundas y la honestidad brutal.", img:"img/gotico2.png"}
 ];
 
@@ -420,7 +420,6 @@ function crearMatch(perfil){
 	  elecciones: [...(eleccionesPorPerfil[perfil.name] || [])],
 	  paso: 0   
 	};
-  };
 
   // 👉 El último match va arriba
   matches.unshift(chat);
