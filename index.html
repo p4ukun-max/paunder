@@ -7,9 +7,16 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#000;color:white;font-family:Inter,system-ui,Arial;display:flex;justify-content:center;}
-.app{width:100%;max-width:420px;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
-
+html,body{
+  width:100%;
+  overflow-x:hidden; height:100%;background:#000;color:white;font-family:Inter,system-ui,Arial;display:flex;justify-content:center;}
+.app{
+  width:100vw;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
 /* HEADER */
 header{padding:14px;display:flex;align-items:center;justify-content:space-between;font-weight:700;}
 #backBtn{font-size:1.5rem;cursor:pointer;display:none;}
