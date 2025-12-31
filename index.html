@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-<title>HeartChat RPG — Tinder Style</title>
+<title>Paunder - Encuentra el amor</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -62,7 +62,7 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 
 <header>
   <span id="backBtn">←</span>
-  <span id="headerTitle">HeartChat RPG</span>
+  <span id="headerTitle">Paunder</span>
   <span><button id="goChats" style="background:none;border:none;color:white;cursor:pointer;">Chats</button></span>
 </header>
 
@@ -211,8 +211,13 @@ function drag(card,perfil){
 function swipe(card,perfil,dir){
   card.style.transform=`translateX(${dir*800}px) rotate(${dir*25}deg)`;
   card.style.opacity=0;
-  if(dir===1) crearMatch(perfil);
-  setTimeout(()=>card.remove(),300);
+	if(dir === 1){
+	  const delay = 1500 + Math.random() * 1500; // 1.5s – 3s
+	  setTimeout(() => {
+		crearMatch(perfil);
+	  }, delay);
+	}
+  setTimeout(()=>card.remove(),500);
 }
 
 document.getElementById("btnLike").onclick=()=>{ const c=deckCards[deckCards.length-1]; if(c) swipe(c,PERSONAJES[deckCards.indexOf(c)],1);};
@@ -220,25 +225,61 @@ document.getElementById("btnSkip").onclick=()=>{ const c=deckCards[deckCards.len
 
 /* MATCHES */
 function crearMatch(perfil){
-  if(matches.find(m=>m.nombre===perfil.name)) return;
-  const chat={nombre:perfil.name,img:perfil.img,interes:50,mensajes:[],elecciones:[...eleccionesPorPerfil[perfil.name]]||[]};
-  matches.push(chat);
+  if(matches.find(m => m.nombre === perfil.name)) return;
+
+  const chat = {
+    nombre: perfil.name,
+    img: perfil.img,
+    interes: 50,
+    mensajes: [
+      {
+        autor: "ella",
+        texto: "¡Hemos hecho match! 😊"
+      }
+    ],
+    elecciones: [...(eleccionesPorPerfil[perfil.name] || [])]
+  };
+
+  // 👉 El último match va arriba
+  matches.unshift(chat);
+
   guardarProgreso();
   renderChatList();
+
+  // 👉 Abrir listado de chats
+  abrirListaChats();
+}
+function abrirListaChats(){
+  deck.style.display = "none";
+  controls.style.display = "none";
+  chatWindow.style.display = "none";
+  chatListScreen.style.display = "flex";
+
+  headerTitle.innerText = "Mis Chats";
+  backBtn.style.display = "inline";
 }
 
 /* RENDER LISTA CHATS */
 function renderChatList(){
-  chatListScreen.innerHTML="";
-  matches.forEach(c=>{
-    const div=document.createElement("div");
-    div.className="chatItem";
-    div.innerHTML=`<img src="${c.img}"><div class="info"><div class="name">${c.nombre}</div><div class="lastMsg">${c.mensajes.slice(-1)[0]?.texto||""}</div></div>`;
-    div.onclick=()=>abrirChat(c);
+  chatListScreen.innerHTML = "";
+
+  matches.forEach(c => {
+    const ultimo = c.mensajes[c.mensajes.length - 1];
+
+    const div = document.createElement("div");
+    div.className = "chatItem";
+    div.innerHTML = `
+      <img src="${c.img}">
+      <div class="info">
+        <div class="name">${c.nombre}</div>
+        <div class="lastMsg">${ultimo ? ultimo.texto : ""}</div>
+      </div>
+    `;
+
+    div.onclick = () => abrirChat(c);
     chatListScreen.appendChild(div);
   });
 }
-
 /* ABRIR CHAT */
 function abrirChat(chat){
   chatActual=chat;
@@ -253,13 +294,16 @@ function abrirChat(chat){
 }
 
 /* VOLVER ATRÁS */
-backBtn.onclick=()=>{
-  chatWindow.style.display="none";
-  backBtn.style.display="none";
-  deck.style.display="flex";
-  controls.style.display="flex";
-  headerTitle.innerText="HeartChat RPG";
+backBtn.onclick = () => {
+  chatWindow.style.display = "none";
+  chatListScreen.style.display = "none";
+  backBtn.style.display = "none";
+
+  deck.style.display = "flex";
+  controls.style.display = "flex";
+  headerTitle.innerText = "Paunder";
 };
+
 
 /* CHAT */
 function renderMensajes(){
