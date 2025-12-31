@@ -260,12 +260,45 @@ const PERSONAJES=[
   {name:"Leonardo", age:36, distance:"14 km", bio:"Voy al gym casi todos los días 💪, levanto pesado y hago siempre la misma rutina.<br> Hablo poco 🗿, pienso menos. <br> Vivo de proteína, preentreno y frases hechas 🥤.<br> No destaco por mis ideas pero soy constante y físicamente fuerte 🏋️‍♂️.", img:"img/gym1.png"},
   {name:"Dylan", age:25, distance:"45 km", bio:"🌊 Socorrista de día, buscador de aventuras de noche. <br> ☀️ Rubio, con amor por el sol, las olas y los atardeceres en la playa.<br> 🏄‍♂️ Si sabes surfear, tenemos competencia; si no, te enseño. 🍹 <br> Experto en hacer mojitos y rescatar sonrisas. <br> 💬 Swipe right si quieres un compañero para paseos en la arena y risas garantizadas.", img:"img/socorrista1.png"},
   {name:"Kaito (中村)", age:22, distance:"20 km", bio:"🇯🇵 Soy de Japon, trabajando en cafe tematico en Tokio.<br>✈️ Ahora en España un tiempo, turismo y aprendiendo español (aun es un poco difícil para mi 😅). <br> Me gusta mucho servir cafe y hablar con clientes y es arte para mi. <br> LIKE si sabes sitios España… o ayudarme con español 😏", img:"img/mayordomo1.png"},
-  {name:"Pau Rivas", age:29, distance:"120 km", bio:"Trabajo salvando vidas, pero también disfruto viajar, comer bien y desconectar del hospital. Busco conexión real, risas honestas y alguien con quien sumar, no pasar el tiempo.", img:"img/medico1.png"},
+  {name:"Pau Rivas", age:36, distance:"120 km", bio:"Trabajo salvando vidas, pero también disfruto viajar, comer bien y desconectar del hospital. Busco conexión real, risas honestas y alguien con quien sumar, no pasar el tiempo.", img:"img/medico1.png"},
   {name:"Jan", age:18, distance:"45 km", bio:"Estudiando para exámenes pero listo para planes espontáneos 😌 <br> Fan de las noches largas, memes malos y risas reales Swipe si te gusta reírte de la vida (y de los lunes).", img:"img/estudiante1.png"},
   {name:"Park Paujin", age:32, distance:"140 km", bio:"Hago música 🎧🎶, escucho K-pop 💿✨ y probablemente te dedicaría una canción sin avisar 💌🎵 <br> Busco a alguien que vibre conmigo 💫, aunque sea fuera de tempo ⏳🎼 <br> Bonus si cantas en el coche 🚗🎤", img:"img/kpoper1.png"},
   {name:"Raven Teo", age:25, distance:"140 km", bio:"No me gustan los chistes ni la gente que los usa para evitar decir algo real. Prefiero el silencio, las conversaciones profundas y la honestidad brutal.", img:"img/gotico2.png"}
 ];
 
+const eleccionesPorPerfilFinalMalo = {
+  "Leonardo":[
+    {pregunta:"No eres lo que busco. Suerte.", opciones:[
+      {texto:"Que te vaya bonito", efecto:5},
+      {texto:"Mejor ve a impresionar a otra saco de musculos", efecto:-5}
+    ]}
+  ],
+  "Dylan":[
+   {pregunta:"Gracias por el match y por escribir. Me pareciste muy simpática, pero no siento la conexión que busco. Te deseo lo mejor 😊", opciones:[
+    {texto:"Mejor es que yo prefiero a los chicos morenos la verdad"},
+    {texto:"Solo no coincidimos en gustos, el marisco, la playa y el alcohol no me van..."},
+    {texto:"Bueno vale", efecto:-10, siguiente:"No es eso... solo era una excusa para hablar... 😅 "}
+  ]}
+  ],
+  "Kaito":[
+    {pregunta:"Gracias por la conversación 🙇‍♂️ <br>Pero creo que no somos buena combinación. <br>Prefiero terminar aquí.", opciones:[
+      {texto:"Ok aprende a hablar", efecto:10},
+      {texto:"Un placer", efecto:-5}
+    ]}
+  ],
+  "Pau Rivas":[
+    {pregunta:"Gracias por escribir. Entre guardias, viajes pendientes y ganas de disfrutar una buena comida sin prisas, he aprendido a valorar mucho mi tiempo y mi energía. Busco una conexión que sume de verdad, con risas fáciles y complicidad natural, y en este caso no siento que estemos en el mismo punto.<br>Te deseo lo mejor y que encuentres a alguien con quien esa conexión fluya sin esfuerzo.", opciones:[
+      {texto:"De acuerdo lo entiendo", efecto:-1000},
+      {texto:"Mucho texto bye", efecto:-1000}
+    ]},
+	
+  "Pau Rivas":[
+    {pregunta:"Gracias por escribir. Entre guardias, viajes pendientes y ganas de disfrutar una buena comida sin prisas, he aprendido a valorar mucho mi tiempo y mi energía. Busco una conexión que sume de verdad, con risas fáciles y complicidad natural, y en este caso no siento que estemos en el mismo punto.<br>Te deseo lo mejor y que encuentres a alguien con quien esa conexión fluya sin esfuerzo.", opciones:[
+      {texto:"De acuerdo lo entiendo", efecto:-1000},
+      {texto:"Mucho texto bye", efecto:-1000}
+    ]}
+  ]
+};
 const eleccionesPorPerfil = {
   "Dylan":[
    {pregunta:"Hola, ¿sabes nadar o voy a tener que salvarte yo?", opciones:[
@@ -293,8 +326,132 @@ const eleccionesPorPerfil = {
     {texto:"Me gusta ver cómo otros se complican la vida", efecto:-10, siguiente: "Eso no es bueno... "},
     {texto:"Bueno… un poco de riesgo no mata a nadie, ¿no?", siguiente: "Supongo que tienes razón jajaja " , efecto:5}
   ]}
+  ,
+    {pregunta:"", opciones:[
+    {texto:"Vale, pregunta importante: ¿el rescate incluye mojitos después o eso va en un pack premium?", efecto:0, siguiente: "" }
+  ]}
+  ,
+    {pregunta:"Incluye mojitos, pero solo si el rescate sale limpio 😌🍹 ¿Confirmamos reserva o todavía estamos negociando condiciones? 😏", opciones:[
+    {texto:"Confirmamos reserva 😏 Pero dejo claro el contrato: mojitos fríos, pajita incluida y cero preguntas incómodas después del rescate 🍹😌", efecto:0, siguiente: "" }
+  ]}
+   ,
+    {pregunta:"Entonces, plan cerrado: vamos a comer marisco frente al mar, sin prisas ni dramas… y después te preparamos un mojito como recompensa oficial del rescate 🍤🌊🍹. Difícil decir que no a eso, ¿no?", opciones:[
+    {texto:"Lo siento pero no me gusta el pescado", efecto:-30, siguiente: "Que pena entonces..." },
+	{texto:"Trato hecho! Marisco frente al mar y luego mojito preparado con cariño 😊", efecto:20, siguiente: "Quedamos mañana en la playa donde hago guardia a la 13:00h. Te estaré esperando 😉" },
+	{texto:"No tomo alcohol pero por ti me emborracho jiji", efecto:5, siguiente: "Ah bueno... que rara pero esta bien supongo! " },
+  ]}
   ],
   "Kaito (中村)":[
+    {pregunta:"¿Qué te gusta hacer?", opciones:[
+      {texto:"Ir al gimnasio", efecto:10},
+      {texto:"Quedarme en casa", efecto:-5}
+    ]}
+  ],
+  "Leonardo":[
+    {pregunta:"Gracias por escribir. Entre guardias, viajes pendientes y ganas de disfrutar una buena comida sin prisas, he aprendido a valorar mucho mi tiempo y mi energía. Busco una conexión que sume de verdad, con risas fáciles y complicidad natural, y en este caso no siento que estemos en el mismo punto.<br>Te deseo lo mejor y que encuentres a alguien con quien esa conexión fluya sin esfuerzo.", opciones:[
+      {texto:"De acuerdo lo entiendo", efecto:-1000},
+      {texto:"Mucho texto bye", efecto:-1000}
+    ]}
+  ]
+};
+const eleccionesPorPerfilFinalBueno = {
+  "Dylan":[
+   {pregunta:"Hola, ¿sabes nadar o voy a tener que salvarte yo?", opciones:[
+    {texto:"Más o menos… dependo de mi flotador.", efecto:5, siguiente: "Jajaja, entonces tu flotador es tu héroe secreto 😎 "},
+    {texto:"No se nadar, así que tendrás que mantenerme a flote… y de paso, darme tu número.", efecto:10, siguiente: "Creo que puedo hacer ambas cosas 😉 "},
+    {texto:"¿Por ser una chica necesito que me salven? Quien te crees...", efecto:-10, siguiente:"No es eso... solo era una excusa para hablar... 😅 "}
+  ]},
+  {pregunta:"¿prefieres empezar en la piscina o en la playa?", opciones:[
+    {texto:"Entrenamiento intenso suena bien… siempre quise hacer que un socorrista corra detrás de mí", efecto:-10, siguiente: "Ya veo 🤷 " },
+    {texto:"Podemos ir a la piscina… aunque no prometo no ahogarme.", efecto:5, siguiente: "Bueno, la piscina entonces "},
+    {texto:"La playa suena genial, así puedo practicar nadar y reírme un poco contigo",efecto:10, siguiente: "Bueno, la playa entonces "}
+  ]},
+    {pregunta:"Pero cuidado, rescatar corazones es más difícil que nadar.", opciones:[
+    {texto:"Espero que no sea demasiado difícil.", efecto:5, siguiente: "Soy un chico experimentado tu tranquila 😌 " },
+    {texto:"Entonces me siento en buenas manos.", efecto:10, siguiente: "¿En serio lo crees? 💪 "},
+    {texto:"Si me ahogo, al menos será dramático.", siguiente: "Bueno... ☹️ " , efecto:-10}
+  ]},
+  {pregunta:"¿Y tú cómo decides si salvar a alguien o no?", opciones:[
+    {texto:"Normalmente dejo que se hundan… me divierto viéndolo.", efecto:-10, siguiente: "Mi trabajo es evitar que se hundan 😅 " },
+    {texto:"Depende del humor del día.", efecto:5, siguiente: "Comprendo. "},
+    {texto:"Me guío por la sonrisa… y creo que contigo ya hay motivo suficiente.", siguiente: "Que bueno 😊 " , efecto:10}
+  ]},
+    {pregunta:"Eso suena peligroso… pero intrigante", opciones:[
+    {texto:"Solo si hay alguien como tú cerca para rescatarme.", efecto:10, siguiente: "Jajaja ya veo, " },
+    {texto:"Me gusta ver cómo otros se complican la vida", efecto:-10, siguiente: "Eso no es bueno... "},
+    {texto:"Bueno… un poco de riesgo no mata a nadie, ¿no?", siguiente: "Supongo que tienes razón jajaja " , efecto:5}
+  ]}
+  ,
+    {pregunta:"", opciones:[
+    {texto:"Vale, pregunta importante: ¿el rescate incluye mojitos después o eso va en un pack premium?", efecto:0, siguiente: "" }
+  ]}
+  ,
+    {pregunta:"Incluye mojitos, pero solo si el rescate sale limpio 😌🍹 ¿Confirmamos reserva o todavía estamos negociando condiciones? 😏", opciones:[
+    {texto:"Confirmamos reserva 😏 Pero dejo claro el contrato: mojitos fríos, pajita incluida y cero preguntas incómodas después del rescate 🍹😌", efecto:0, siguiente: "" }
+  ]}
+   ,
+    {pregunta:"Entonces, plan cerrado: vamos a comer marisco frente al mar, sin prisas ni dramas… y después te preparamos un mojito como recompensa oficial del rescate 🍤🌊🍹. Difícil decir que no a eso, ¿no?", opciones:[
+    {texto:"Lo siento pero no me gusta el pescado", efecto:-30, siguiente: "Que pena entonces..." },
+	{texto:"Trato hecho! Marisco frente al mar y luego mojito preparado con cariño 😊", efecto:20, siguiente: "Quedamos mañana en la playa donde hago guardia a la 13:00h. Te estaré esperando 😉" },
+	{texto:"No tomo alcohol pero por ti me emborracho jiji", efecto:5, siguiente: "Ah bueno... que rara pero esta bien supongo! " },
+  ]}
+  ],
+  "Kaito (中村)":[
+    {pregunta:"¿Qué te gusta hacer?", opciones:[
+      {texto:"Ir al gimnasio", efecto:10},
+      {texto:"Quedarme en casa", efecto:-5}
+    ]}
+  ],
+  "Leonardo":[
+    {pregunta:"Fin de semana favorito?", opciones:[
+      {texto:"Salir con amigos", efecto:5},
+      {texto:"Quedarme en casa", efecto:-5}
+    ]}
+  ]
+};
+const eleccionesPorPerfilFinalAmigos = {
+  "Dylan":[
+   {pregunta:"Hola, ¿sabes nadar o voy a tener que salvarte yo?", opciones:[
+    {texto:"Más o menos… dependo de mi flotador.", efecto:5, siguiente: "Jajaja, entonces tu flotador es tu héroe secreto 😎 "},
+    {texto:"No se nadar, así que tendrás que mantenerme a flote… y de paso, darme tu número.", efecto:10, siguiente: "Creo que puedo hacer ambas cosas 😉 "},
+    {texto:"¿Por ser una chica necesito que me salven? Quien te crees...", efecto:-10, siguiente:"No es eso... solo era una excusa para hablar... 😅 "}
+  ]},
+  {pregunta:"¿prefieres empezar en la piscina o en la playa?", opciones:[
+    {texto:"Entrenamiento intenso suena bien… siempre quise hacer que un socorrista corra detrás de mí", efecto:-10, siguiente: "Ya veo 🤷 " },
+    {texto:"Podemos ir a la piscina… aunque no prometo no ahogarme.", efecto:5, siguiente: "Bueno, la piscina entonces "},
+    {texto:"La playa suena genial, así puedo practicar nadar y reírme un poco contigo",efecto:10, siguiente: "Bueno, la playa entonces "}
+  ]},
+    {pregunta:"Pero cuidado, rescatar corazones es más difícil que nadar.", opciones:[
+    {texto:"Espero que no sea demasiado difícil.", efecto:5, siguiente: "Soy un chico experimentado tu tranquila 😌 " },
+    {texto:"Entonces me siento en buenas manos.", efecto:10, siguiente: "¿En serio lo crees? 💪 "},
+    {texto:"Si me ahogo, al menos será dramático.", siguiente: "Bueno... ☹️ " , efecto:-10}
+  ]},
+  {pregunta:"¿Y tú cómo decides si salvar a alguien o no?", opciones:[
+    {texto:"Normalmente dejo que se hundan… me divierto viéndolo.", efecto:-10, siguiente: "Mi trabajo es evitar que se hundan 😅 " },
+    {texto:"Depende del humor del día.", efecto:5, siguiente: "Comprendo. "},
+    {texto:"Me guío por la sonrisa… y creo que contigo ya hay motivo suficiente.", siguiente: "Que bueno 😊 " , efecto:10}
+  ]},
+    {pregunta:"Eso suena peligroso… pero intrigante", opciones:[
+    {texto:"Solo si hay alguien como tú cerca para rescatarme.", efecto:10, siguiente: "Jajaja ya veo, " },
+    {texto:"Me gusta ver cómo otros se complican la vida", efecto:-10, siguiente: "Eso no es bueno... "},
+    {texto:"Bueno… un poco de riesgo no mata a nadie, ¿no?", siguiente: "Supongo que tienes razón jajaja " , efecto:5}
+  ]}
+  ,
+    {pregunta:"", opciones:[
+    {texto:"Vale, pregunta importante: ¿el rescate incluye mojitos después o eso va en un pack premium?", efecto:0, siguiente: "" }
+  ]}
+  ,
+    {pregunta:"Incluye mojitos, pero solo si el rescate sale limpio 😌🍹 ¿Confirmamos reserva o todavía estamos negociando condiciones? 😏", opciones:[
+    {texto:"Confirmamos reserva 😏 Pero dejo claro el contrato: mojitos fríos, pajita incluida y cero preguntas incómodas después del rescate 🍹😌", efecto:0, siguiente: "" }
+  ]}
+   ,
+    {pregunta:"Entonces, plan cerrado: vamos a comer marisco frente al mar, sin prisas ni dramas… y después te preparamos un mojito como recompensa oficial del rescate 🍤🌊🍹. Difícil decir que no a eso, ¿no?", opciones:[
+    {texto:"Lo siento pero no me gusta el pescado", efecto:-30, siguiente: "Que pena entonces..." },
+	{texto:"Trato hecho! Marisco frente al mar y luego mojito preparado con cariño 😊", efecto:20, siguiente: "Quedamos mañana en la playa donde hago guardia a la 13:00h. Te estaré esperando 😉" },
+	{texto:"No tomo alcohol pero por ti me emborracho jiji", efecto:5, siguiente: "Ah bueno... que rara pero esta bien supongo! " },
+  ]}
+  ],
+  "Kaito":[
     {pregunta:"¿Qué te gusta hacer?", opciones:[
       {texto:"Ir al gimnasio", efecto:10},
       {texto:"Quedarme en casa", efecto:-5}
