@@ -120,36 +120,49 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 #matchOverlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.9);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background:black;
   z-index:99999;
+  overflow:hidden;
 }
 
 #matchOverlay.hidden{
   display:none;
 }
 
-.matchBox{
+#matchOverlay img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:brightness(0.75);
+}
+
+.matchText{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   text-align:center;
-  animation:matchPop 0.8s ease-out;
+  animation:matchFade 0.8s ease-out;
 }
 
-.matchBox h1{
-  font-size:3rem;
-  margin-bottom:10px;
+.matchText h1{
+  font-size:3.5rem;
+  font-weight:900;
+  letter-spacing:2px;
+  text-shadow:0 4px 20px rgba(0,0,0,0.6);
 }
 
-.matchBox p{
+.matchText p{
+  margin-top:10px;
   font-size:1.2rem;
-  opacity:0.8;
+  opacity:0.9;
 }
 
-@keyframes matchPop{
-  0%{transform:scale(0);opacity:0}
-  70%{transform:scale(1.1)}
-  100%{transform:scale(1);opacity:1}
+@keyframes matchFade{
+  from{transform:scale(0.9);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 </style>
 </head>
@@ -175,7 +188,6 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 
 <div class="controls" id="controls">
   <button class="circle-btn skip" id="btnSkip">✕</button>
-  <button class="circle-btn star">★</button>
   <button class="circle-btn like" id="btnLike">♥</button>
 </div>
 
@@ -195,7 +207,7 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 
 </div>
 <!-- MATCH OVERLAY -->
-<audio id="matchSound" src="sounds/match.mp3" preload="auto"></audio>
+<audio id="matchSound" src="paunder.mp3" preload="auto"></audio>
 
 <div id="matchOverlay" class="hidden">
   <div class="matchBox">
@@ -278,18 +290,22 @@ const eleccionesPorPerfil = {
     ]}
   ]
 };
-function mostrarAnimacionMatch(callback){
+function mostrarAnimacionMatch(perfil, callback){
   const overlay = document.getElementById("matchOverlay");
   const sound = document.getElementById("matchSound");
+  const img = document.getElementById("matchImg");
+
+  img.src = perfil.img;
 
   overlay.classList.remove("hidden");
+
   sound.currentTime = 0;
-  sound.play().catch(()=>{}); // por si el navegador bloquea
+  sound.play().catch(()=>{});
 
   setTimeout(() => {
     overlay.classList.add("hidden");
     callback && callback();
-  }, 2500); // duración animación
+  }, 2500);
 }
 /* ===================== VARIABLES ===================== */
 const deck=document.getElementById("deck");
@@ -400,10 +416,10 @@ function crearMatch(perfil){
   renderChatList();
 
   // 👉 Abrir listado de chats
-  mostrarAnimacionMatch(() => {
+  mostrarAnimacionMatch(perfil, () => {
   abrirListaChats();
   createDeck();
-	});
+});
 }
 function abrirListaChats(){
   deck.style.display = "none";
