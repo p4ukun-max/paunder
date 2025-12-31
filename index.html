@@ -18,39 +18,42 @@ header{padding:14px;display:flex;align-items:center;justify-content:space-betwee
 .deck{flex:1;position:relative;overflow:hidden;}
 .card{
   position:absolute;
-  width:100vw;        /* 100% ancho pantalla */
-  height:70vh;        /* 70% alto */
+  width:100vw;
+  height:70vh;
   left:0;
   top:0;
-  border-radius:0;    /* estilo app full */
-  overflow:hidden;
+  overflow:hidden;   /* 🔴 CLAVE */
   background:#000;
-  box-shadow:none;
   touch-action:none;
-  transition:transform .3s ease, opacity .3s ease;
 }
 .card img{
-  width:100%;
+  position:absolute;
+  inset:0;
   height:100%;
-  object-fit:cover;
-  object-position:center top;
+  object-fit:cover;        /* llena la card */
+  object-position:center; /* centrada */
   display:block;
 }
 .overlay{
   position:absolute;
-  inset:0;
+  left:0;
+  right:0;
+  bottom:0;
+  height:35%; /* SOLO la parte baja */
   background:linear-gradient(
     to top,
-    rgba(0,0,0,.9) 25%,
-    rgba(0,0,0,.6) 45%,
-    rgba(0,0,0,0) 70%
+    rgba(0,0,0,0.95) 0%,
+    rgba(0,0,0,0.75) 40%,
+    rgba(0,0,0,0.3) 70%,
+    rgba(0,0,0,0) 100%
   );
   color:#fff;
-  padding:20px 18px 26px; /* más aire */
+  padding:18px 18px 22px;
   display:flex;
   flex-direction:column;
   justify-content:flex-end;
-}.name{
+}
+.name{
   font-size:1.6rem;
   font-weight:800;
   line-height:1.2;
