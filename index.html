@@ -412,18 +412,14 @@ function yaTieneMatch(nombre){
 }
 function crearMatch(perfil){
   if(matches.find(m => m.nombre === perfil.name)) return;
-
-  const chat = {
-    nombre: perfil.name,
-    img: perfil.img,
-    interes: 50,
-    mensajes: [
-      {
-        autor: "ella",
-        texto: "¡Hemos hecho match! 😊"
-      }
-    ],
-    elecciones: [...(eleccionesPorPerfil[perfil.name] || [])]
+	const chat = {
+	  nombre: perfil.name,
+	  img: perfil.img,
+	  interes: 50,
+	  mensajes: [],
+	  elecciones: [...(eleccionesPorPerfil[perfil.name] || [])],
+	  paso: 0   
+	};
   };
 
   // 👉 El último match va arriba
@@ -481,7 +477,9 @@ function abrirChat(chat){
   backBtn.style.display = "inline";
 
   renderMensajes();
-  mostrarElecciones();
+  if(chat.mensajes.length === 0){
+	  mostrarPregunta();
+	}
 }
 /* VOLVER ATRÁS */
 backBtn.onclick = () => {
@@ -507,21 +505,52 @@ function renderMensajes(){
   chatMsgs.scrollTop=chatMsgs.scrollHeight;
 }
 
-function mostrarElecciones(){
+function mostrarPregunta(){
   chatOpciones.innerHTML="";
-  const next=chatActual.elecciones.shift();
-  if(!next) return;
-  next.opciones.forEach(o=>{
+
+  const paso = chatActual.paso;
+  const bloque = chatActual.elecciones[paso];
+  if(!bloque) return;
+
+  // 👉 mostrar la pregunta como mensaje de ella
+  chatActual.mensajes.push({
+    autor:"ella",
+    texto: bloque.pregunta
+  });
+  renderMensajes();
+
+  // 👉 crear botones de respuesta
+  bloque.opciones.forEach(op=>{
     const btn=document.createElement("button");
-    btn.innerText=o.texto;
+    btn.innerText=op.texto;
+
     btn.onclick=()=>{
-      chatActual.interes+=o.efecto;
-      chatActual.mensajes.push({autor:"yo",texto:o.texto});
+      chatActual.interes += op.efecto || 0;
+
+      // mensaje del jugador
+      chatActual.mensajes.push({
+        autor:"yo",
+        texto: op.texto
+      });
+
       renderMensajes();
       chatOpciones.innerHTML="";
-      setTimeout(respuestaAuto,1000);
-      guardarProgreso();
+
+      // 👉 respuesta automática usando "siguiente"
+      setTimeout(()=>{
+        chatActual.mensajes.push({
+          autor:"ella",
+          texto: op.siguiente || "..."
+        });
+        renderMensajes();
+
+        chatActual.paso++;      // avanzar diálogo
+        guardarProgreso();
+
+        setTimeout(mostrarPregunta,800);
+      },700);
     };
+
     chatOpciones.appendChild(btn);
   });
 }
