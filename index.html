@@ -266,7 +266,7 @@ const PERSONAJES=[
   {name:"Raven Teo", age:25, distance:"140 km", bio:"No me gustan los chistes ni la gente que los usa para evitar decir algo real. Prefiero el silencio, las conversaciones profundas y la honestidad brutal.", img:"img/gotico2.png"}
 ];
 
-/*const eleccionesPorPerfilFinalMalo = {
+const eleccionesPorPerfilFinalMalo = {
   "Leonardo":[
     {pregunta:"No eres lo que busco. Suerte.", opciones:[
       {texto:"Que te vaya bonito", efecto:5},
@@ -354,7 +354,7 @@ const eleccionesPorPerfil = {
     ]}
   ]
 };
-	/*
+	
 const eleccionesPorPerfilFinalBueno = {
   "Dylan":[
    {pregunta:"Hola, ¿sabes nadar o voy a tener que salvarte yo?", opciones:[
@@ -410,61 +410,7 @@ const eleccionesPorPerfilFinalBueno = {
     ]}
   ]
 };
-const eleccionesPorPerfilFinalAmigos = {
-  "Dylan":[
-   {pregunta:"Hola, ¿sabes nadar o voy a tener que salvarte yo?", opciones:[
-    {texto:"Más o menos… dependo de mi flotador.", efecto:5, siguiente: "Jajaja, entonces tu flotador es tu héroe secreto 😎 "},
-    {texto:"No se nadar, así que tendrás que mantenerme a flote… y de paso, darme tu número.", efecto:10, siguiente: "Creo que puedo hacer ambas cosas 😉 "},
-    {texto:"¿Por ser una chica necesito que me salven? Quien te crees...", efecto:-10, siguiente:"No es eso... solo era una excusa para hablar... 😅 "}
-  ]},
-  {pregunta:"¿prefieres empezar en la piscina o en la playa?", opciones:[
-    {texto:"Entrenamiento intenso suena bien… siempre quise hacer que un socorrista corra detrás de mí", efecto:-10, siguiente: "Ya veo 🤷 " },
-    {texto:"Podemos ir a la piscina… aunque no prometo no ahogarme.", efecto:5, siguiente: "Bueno, la piscina entonces "},
-    {texto:"La playa suena genial, así puedo practicar nadar y reírme un poco contigo",efecto:10, siguiente: "Bueno, la playa entonces "}
-  ]},
-    {pregunta:"Pero cuidado, rescatar corazones es más difícil que nadar.", opciones:[
-    {texto:"Espero que no sea demasiado difícil.", efecto:5, siguiente: "Soy un chico experimentado tu tranquila 😌 " },
-    {texto:"Entonces me siento en buenas manos.", efecto:10, siguiente: "¿En serio lo crees? 💪 "},
-    {texto:"Si me ahogo, al menos será dramático.", siguiente: "Bueno... ☹️ " , efecto:-10}
-  ]},
-  {pregunta:"¿Y tú cómo decides si salvar a alguien o no?", opciones:[
-    {texto:"Normalmente dejo que se hundan… me divierto viéndolo.", efecto:-10, siguiente: "Mi trabajo es evitar que se hundan 😅 " },
-    {texto:"Depende del humor del día.", efecto:5, siguiente: "Comprendo. "},
-    {texto:"Me guío por la sonrisa… y creo que contigo ya hay motivo suficiente.", siguiente: "Que bueno 😊 " , efecto:10}
-  ]},
-    {pregunta:"Eso suena peligroso… pero intrigante", opciones:[
-    {texto:"Solo si hay alguien como tú cerca para rescatarme.", efecto:10, siguiente: "Jajaja ya veo, " },
-    {texto:"Me gusta ver cómo otros se complican la vida", efecto:-10, siguiente: "Eso no es bueno... "},
-    {texto:"Bueno… un poco de riesgo no mata a nadie, ¿no?", siguiente: "Supongo que tienes razón jajaja " , efecto:5}
-  ]}
-  ,
-    {pregunta:"", opciones:[
-    {texto:"Vale, pregunta importante: ¿el rescate incluye mojitos después o eso va en un pack premium?", efecto:0, siguiente: "" }
-  ]}
-  ,
-    {pregunta:"Incluye mojitos, pero solo si el rescate sale limpio 😌🍹 ¿Confirmamos reserva o todavía estamos negociando condiciones? 😏", opciones:[
-    {texto:"Confirmamos reserva 😏 Pero dejo claro el contrato: mojitos fríos, pajita incluida y cero preguntas incómodas después del rescate 🍹😌", efecto:0, siguiente: "" }
-  ]}
-   ,
-    {pregunta:"Entonces, plan cerrado: vamos a comer marisco frente al mar, sin prisas ni dramas… y después te preparamos un mojito como recompensa oficial del rescate 🍤🌊🍹. Difícil decir que no a eso, ¿no?", opciones:[
-    {texto:"Lo siento pero no me gusta el pescado", efecto:-30, siguiente: "Que pena entonces..." },
-	{texto:"Trato hecho! Marisco frente al mar y luego mojito preparado con cariño 😊", efecto:20, siguiente: "Quedamos mañana en la playa donde hago guardia a la 13:00h. Te estaré esperando 😉" },
-	{texto:"No tomo alcohol pero por ti me emborracho jiji", efecto:5, siguiente: "Ah bueno... que rara pero esta bien supongo! " },
-  ]}
-  ],
-  "Kaito":[
-    {pregunta:"¿Qué te gusta hacer?", opciones:[
-      {texto:"Ir al gimnasio", efecto:10},
-      {texto:"Quedarme en casa", efecto:-5}
-    ]}
-  ],
-  "Leonardo":[
-    {pregunta:"Fin de semana favorito?", opciones:[
-      {texto:"Salir con amigos", efecto:5},
-      {texto:"Quedarme en casa", efecto:-5}
-    ]}
-  ]
-};*/
+	
 function mostrarAnimacionMatch(perfil, callback){
   const overlay = document.getElementById("matchOverlay");
   const sound = document.getElementById("matchSound");
@@ -564,7 +510,7 @@ function swipe(card, perfil, dir){
 document.getElementById("btnLike").onclick=()=>{ const c=deckCards[deckCards.length-1]; if(c) swipe(c,PERSONAJES[deckCards.indexOf(c)],1);};
 document.getElementById("btnSkip").onclick=()=>{ const c=deckCards[deckCards.length-1]; if(c) swipe(c,PERSONAJES[deckCards.indexOf(c)],-1);};
 
-/* MATCHES 
+/* MATCHES */
 function yaTieneMatch(nombre){
   return matches.some(m => m.nombre === nombre);
 }
@@ -591,7 +537,6 @@ function crearMatch(perfil){
   createDeck();
 });
 }
-	/*
 function abrirListaChats(){
   deck.style.display = "none";
   controls.style.display = "none";
@@ -602,7 +547,7 @@ function abrirListaChats(){
   backBtn.style.display = "inline";
 }
 
-/* RENDER LISTA CHATS 
+/* RENDER LISTA CHATS */
 function renderChatList(){
   chatListScreen.innerHTML = "";
 
@@ -623,7 +568,7 @@ function renderChatList(){
     chatListScreen.appendChild(div);
   });
 }
-/* ABRIR CHAT 
+/* ABRIR CHAT */
 function abrirChat(chat){
   chatActual = chat;
   deck.style.display = "none";
@@ -639,7 +584,7 @@ function abrirChat(chat){
 	  mostrarPregunta();
 	}
 }
-/* VOLVER ATRÁS 
+/* VOLVER ATRÁS */
 backBtn.onclick = () => {
   chatWindow.style.display = "none";
   chatListScreen.style.display = "none";
@@ -651,7 +596,7 @@ backBtn.onclick = () => {
   mostrarLogo();
 };
 
-/* CHAT 
+/* CHAT */
 function renderMensajes(){
   chatMsgs.innerHTML="";
   chatActual.mensajes.forEach(m=>{
@@ -723,7 +668,7 @@ function respuestaAuto(){
   mostrarElecciones();
 }
 
-/* INPUT 
+/* INPUT */
 sendBtn.onclick=()=>{
   const txt=chatInput.value.trim();
   if(!txt) return;
@@ -734,7 +679,7 @@ sendBtn.onclick=()=>{
   guardarProgreso();
 };
 
-/* LOCALSTORAGE 
+/* LOCALSTORAGE */
 function guardarProgreso(){
   localStorage.setItem("heartChatRPG",JSON.stringify(matches));
 }
@@ -745,7 +690,7 @@ function cargarProgreso(){
   renderChatList();
 }
 
-/* IR A CHAT LIST 
+/* IR A CHAT LIST */
 goChats.onclick = () => {
   deck.style.display = "none";
   controls.style.display = "none";
@@ -756,13 +701,14 @@ goChats.onclick = () => {
   backBtn.style.display = "inline";
 };
 
-/* INICIO *//*
+/* INICIO */
 createDeck();
-cargarProgreso();*/
+cargarProgreso();
 </script>
 
 </body>
 </html>
+
 
 
 
